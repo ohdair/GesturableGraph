@@ -14,4 +14,15 @@ public enum Distribution {
     case equalSpacing
     case evenSpacing
     case aroundSpacing
+
+    var calibrationValue: Int {
+        switch self {
+        case .equalSpacing:
+            return -1
+        case .evenSpacing:
+            return 1
+        case .aroundSpacing:
+            return 0
+        }
+    }
 }
