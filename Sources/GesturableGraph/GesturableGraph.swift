@@ -1,9 +1,9 @@
 import UIKit
 
 public class GesturableGraph: UIView {
+    public let elements: [Double]
+    public var distribution: Distribution
     private var verticalPadding: Separation
-    let elements: [Double]
-    var distribution: Distribution
 
     public init?(_ frame: CGRect = .zero, elements: [Double]) {
         guard elements.count > 1 else {
@@ -43,12 +43,12 @@ public class GesturableGraph: UIView {
 
 //MARK: - 속성 값을 변경하는 메서드
 extension GesturableGraph {
-    func padding(top: Int) {
+    public func padding(top: Int) {
         guard top >= 0 else { return }
         verticalPadding.top = top
     }
 
-    func padding(bottom: Int) {
+    public func padding(bottom: Int) {
         guard bottom >= 0 else { return }
         verticalPadding.bottom = bottom
     }
