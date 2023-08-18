@@ -14,8 +14,6 @@ public class GesturableGraph: UIView {
         self.distribution = .equalSpacing
         self.verticalPadding = Separation()
         super.init(frame: frame)
-
-        backgroundColor = #colorLiteral(red: 0.5049715909, green: 0.5049715909, blue: 0.5049715909, alpha: 0.3490790563)
     }
 
     required init?(coder: NSCoder) {
@@ -25,7 +23,9 @@ public class GesturableGraph: UIView {
     public override func draw(_ rect: CGRect) {
         super.draw(rect)
 
-        UIColor.blue.setStroke()
+        #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1).setStroke()
+        #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1).setFill()
+
         let points = convertToPoints()
         let curveLinePath = UIBezierPath(quadCurve: points)
 
@@ -36,7 +36,6 @@ public class GesturableGraph: UIView {
 
         points.forEach { point in
             let pointPath = UIBezierPath(ovalIn: CGRect(x: point.x - 2, y: point.y - 2, width: 4, height: 4))
-            UIColor.gray.set()
             pointPath.fill()
         }
     }
