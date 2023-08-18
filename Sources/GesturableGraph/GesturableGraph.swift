@@ -14,6 +14,8 @@ public class GesturableGraph: UIView {
         self.distribution = .equalSpacing
         self.verticalPadding = Separation()
         super.init(frame: frame)
+
+        backgroundColor = #colorLiteral(red: 0.5049715909, green: 0.5049715909, blue: 0.5049715909, alpha: 0.3490790563)
     }
 
     required init?(coder: NSCoder) {
