@@ -49,8 +49,8 @@ public class GesturableGraph: UIView {
         }
 
         line.color.setStroke()
-        path?.stroke()
         path?.lineWidth = line.width
+        path?.stroke()
     }
 
     private func drawPoint(_ point: CGPoint) {
