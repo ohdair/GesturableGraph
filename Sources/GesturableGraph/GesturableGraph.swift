@@ -3,7 +3,7 @@ import UIKit
 public class GesturableGraph: UIView {
     public let elements: [Double]
     public var distribution: Distribution
-    private var verticalPadding: Separation
+    private var verticalPadding: VerticalPadding
 
     public init?(_ frame: CGRect = .zero, elements: [Double]) {
         guard elements.count > 1 else {
@@ -12,7 +12,7 @@ public class GesturableGraph: UIView {
 
         self.elements = elements
         self.distribution = .equalSpacing
-        self.verticalPadding = Separation()
+        self.verticalPadding = VerticalPadding()
         super.init(frame: frame)
     }
 
