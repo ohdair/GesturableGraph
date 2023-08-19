@@ -30,8 +30,6 @@ public class GesturableGraph: UIView {
         let curveLinePath = UIBezierPath(quadCurve: points)
 
         curveLinePath?.lineWidth = 2
-        curveLinePath?.lineJoinStyle = .round
-        curveLinePath?.lineCapStyle = .round
         curveLinePath?.stroke()
 
         points.forEach { point in
@@ -94,17 +92,9 @@ public extension UIBezierPath {
 
         self.init()
 
-        // 시작점 표시
         var p0 = points[0]
         move(to: p0)
 
-        // 값이 2개라면 직선으로 표시
-        guard points.count != 2 else {
-            addLine(to: points[1])
-            return
-        }
-
-        // 중간점을 잡고 2개의 곡선 만들기
         for i in 1..<points.count {
             let p2 = midPoint(from: p0, to: points[i])
 
@@ -113,14 +103,15 @@ public extension UIBezierPath {
 
             p0 = points[i]
         }
+
+        lineCapStyle = .round
+        lineJoinStyle = .round
     }
 
     private func midPoint(from p1: CGPoint, to p2: CGPoint) -> CGPoint {
         return CGPoint(x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2)
     }
 
-    // 상향곡선으로 그릴 때에는 p0에 목적지로 두어야 하고,
-    // 하향곡선에서는 p2에 목적지를 두어야 한다
     private func controlPoint(p0: CGPoint, p2: CGPoint) -> CGPoint {
         var p1 = midPoint(from: p0, to: p2)
         p1.y = p0.y
