@@ -35,9 +35,6 @@ public class GesturableGraph: UIView {
         let graphPath = drawGraph(through: points)
         drawPoints(points)
         fillGraphArea(graphPath, using: points)
-
-        line.color.setStroke()
-        graphPath?.stroke()
     }
 }
 
@@ -67,7 +64,9 @@ extension GesturableGraph {
             path = UIBezierPath(straight: points)
         }
 
+        line.color.setStroke()
         path?.lineWidth = line.width
+        path?.stroke()
 
         return path
     }
