@@ -82,8 +82,8 @@ public class GesturableGraph: UIView {
             return
         }
 
-        clippingPath.addLine(to: CGPoint(x: firstPoint.x, y: bounds.maxY))
         clippingPath.addLine(to: CGPoint(x: lastPoint.x, y: bounds.maxY))
+        clippingPath.addLine(to: CGPoint(x: firstPoint.x, y: bounds.maxY))
         clippingPath.close()
         clippingPath.addClip()
 
