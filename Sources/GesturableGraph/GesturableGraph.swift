@@ -3,6 +3,7 @@ import UIKit
 public class GesturableGraph: UIView {
     public let elements: [Double]
     public var distribution: Distribution
+    public var type: GraphType
     private var verticalPadding: VerticalPadding
 
     public init?(_ frame: CGRect = .zero, elements: [Double]) {
@@ -12,6 +13,7 @@ public class GesturableGraph: UIView {
 
         self.elements = elements
         self.distribution = .equalSpacing
+        self.type = .curve
         self.verticalPadding = VerticalPadding()
         super.init(frame: frame)
     }
@@ -27,7 +29,7 @@ public class GesturableGraph: UIView {
         #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1).setFill()
 
         let points = convertToPoints()
-        let curveLinePath = UIBezierPath(quadCurve: points)
+        let curveLinePath = drawGraph(through: points)
 
         curveLinePath?.lineWidth = 2
         curveLinePath?.stroke()
@@ -35,6 +37,15 @@ public class GesturableGraph: UIView {
         points.forEach { point in
             let pointPath = UIBezierPath(ovalIn: CGRect(x: point.x - 2, y: point.y - 2, width: 4, height: 4))
             pointPath.fill()
+        }
+    }
+
+    private func drawGraph(through points: [CGPoint]) -> UIBezierPath? {
+        switch type {
+        case .curve:
+            return UIBezierPath(quadCurve: points)
+        case .straight:
+            return UIBezierPath(straight: points)
         }
     }
 }
@@ -85,7 +96,7 @@ extension GesturableGraph {
 
 //MARK: - UIBezierPath 생성하는
 public extension UIBezierPath {
-    convenience init?(line points: [CGPoint]) {
+    convenience init?(straight points: [CGPoint]) {
         guard points.count > 1 else {
             return nil
         }
