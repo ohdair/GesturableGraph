@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol Drawable {
+public protocol GraphDrawable {
     var width: Double { get set }
     var color: UIColor { get set }
 }

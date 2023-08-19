@@ -7,8 +7,8 @@
 
 import UIKit
 
-public struct GraphPoint: Drawable {
-    var width: Double = 4
-    var color: UIColor = .white
-    var isHidden: Bool = false
+public struct GraphPoint: GraphDrawable {
+    public var width: Double = 4
+    public var color: UIColor = .white
+    public var isHidden: Bool = false
 }

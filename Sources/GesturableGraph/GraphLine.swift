@@ -7,7 +7,7 @@
 
 import UIKit
 
-public struct GraphLine: Drawable {
-    var width: Double = 2
-    var color: UIColor = .white
+public struct GraphLine: GraphDrawable {
+    public var width: Double = 2
+    public var color: UIColor = .white
 }
