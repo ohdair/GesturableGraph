@@ -43,14 +43,14 @@ public class GesturableGraph: UIView {
 
 //MARK: - 속성 값을 변경하는 메서드
 extension GesturableGraph {
-    public func padding(top: Int) {
-        guard top >= 0 else { return }
-        verticalPadding.top = top
+    public func paddingOfTop(scale: Double) {
+        guard scale >= .zero else { return }
+        verticalPadding.top = scale
     }
 
-    public func padding(bottom: Int) {
-        guard bottom >= 0 else { return }
-        verticalPadding.bottom = bottom
+    public func paddingOfBottom(scale: Double) {
+        guard scale >= .zero else { return }
+        verticalPadding.bottom = scale
     }
 }
 
@@ -131,23 +131,23 @@ public extension UIBezierPath {
 
 //MARK: - verticalPadding 값에 따른 Top, Bottom 보정 값
 private extension Array where Element == Double {
-    func calibrationTop(ofValue top: Int) -> Double? {
+    func calibrationTop(ofValue top: Double) -> Double? {
         guard let max = self.max(),
               let min = self.min()
         else {
             return nil
         }
 
-        return max + ((max - min) * Double(top) / 100)
+        return max + ((max - min) * top)
     }
 
-    func calibrationBottom(ofValue bottom: Int) -> Double? {
+    func calibrationBottom(ofValue bottom: Double) -> Double? {
         guard let max = self.max(),
               let min = self.min()
         else {
             return nil
         }
 
-        return min - ((max - min) * Double(bottom) / 100)
+        return min - ((max - min) * bottom)
     }
 }
