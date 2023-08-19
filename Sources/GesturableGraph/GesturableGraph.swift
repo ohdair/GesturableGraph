@@ -35,8 +35,27 @@ public class GesturableGraph: UIView {
         let graphPath = drawGraph(through: points)
         drawPoints(points)
         fillGraphArea(graphPath, using: points)
+
+        line.color.setStroke()
+        graphPath?.stroke()
+    }
+}
+
+//MARK: - 속성 값을 변경하는 메서드
+extension GesturableGraph {
+    public func paddingOfTop(scale: Double) {
+        guard scale >= .zero else { return }
+        verticalPadding.top = scale
     }
 
+    public func paddingOfBottom(scale: Double) {
+        guard scale >= .zero else { return }
+        verticalPadding.bottom = scale
+    }
+}
+
+//MARK: - 그래프 관련 draw하는 메서드
+extension GesturableGraph {
     @discardableResult
     private func drawGraph(through points: [CGPoint]) -> UIBezierPath? {
         var path: UIBezierPath?
@@ -48,9 +67,7 @@ public class GesturableGraph: UIView {
             path = UIBezierPath(straight: points)
         }
 
-        line.color.setStroke()
         path?.lineWidth = line.width
-        path?.stroke()
 
         return path
     }
@@ -82,8 +99,8 @@ public class GesturableGraph: UIView {
             return
         }
 
-        clippingPath.addLine(to: CGPoint(x: lastPoint.x, y: bounds.maxY))
-        clippingPath.addLine(to: CGPoint(x: firstPoint.x, y: bounds.maxY))
+        clippingPath.addLine(to: CGPoint(x: lastPoint.x + (line.width / 2), y: bounds.maxY))
+        clippingPath.addLine(to: CGPoint(x: firstPoint.x - (line.width / 2), y: bounds.maxY))
         clippingPath.close()
         clippingPath.addClip()
 
@@ -91,7 +108,7 @@ public class GesturableGraph: UIView {
             return
         }
 
-        let colors = [area.color.withAlphaComponent(0.6).cgColor, area.color.withAlphaComponent(0.1).cgColor]
+        let colors = [area.color.withAlphaComponent(0.5).cgColor, area.color.withAlphaComponent(0.1).cgColor]
         let colorSpace = CGColorSpaceCreateDeviceRGB()
 
         guard let gradient = CGGradient(
@@ -109,19 +126,6 @@ public class GesturableGraph: UIView {
             end: CGPoint(x: 0, y: bounds.maxY),
             options: [])
         context.restoreGState()
-    }
-}
-
-//MARK: - 속성 값을 변경하는 메서드
-extension GesturableGraph {
-    public func paddingOfTop(scale: Double) {
-        guard scale >= .zero else { return }
-        verticalPadding.top = scale
-    }
-
-    public func paddingOfBottom(scale: Double) {
-        guard scale >= .zero else { return }
-        verticalPadding.bottom = scale
     }
 }
 
