@@ -6,6 +6,7 @@ public class GesturableGraph: UIView {
     public var type: GraphType
     public var line: GraphLine
     public var point: GraphPoint
+    public var area: GraphArea
     private var verticalPadding: VerticalPadding
 
     public init?(_ frame: CGRect = .zero, elements: [Double]) {
@@ -18,6 +19,7 @@ public class GesturableGraph: UIView {
         self.type = .curve
         self.line = GraphLine()
         self.point = GraphPoint()
+        self.area = GraphArea()
         self.verticalPadding = VerticalPadding()
         super.init(frame: frame)
     }
@@ -30,11 +32,13 @@ public class GesturableGraph: UIView {
         super.draw(rect)
 
         let points = convertToPoints()
-        drawGraph(through: points)
+        let graphPath = drawGraph(through: points)
         drawPoints(points)
+        fillGraphArea(graphPath, using: points)
     }
 
-    private func drawGraph(through points: [CGPoint]) {
+    @discardableResult
+    private func drawGraph(through points: [CGPoint]) -> UIBezierPath? {
         var path: UIBezierPath?
 
         switch type {
@@ -47,6 +51,8 @@ public class GesturableGraph: UIView {
         line.color.setStroke()
         path?.lineWidth = line.width
         path?.stroke()
+
+        return path
     }
 
     private func drawPoints(_ points: [CGPoint]) {
@@ -66,6 +72,43 @@ public class GesturableGraph: UIView {
         let pointRect = CGRect(x: point.x - radius, y: point.y - radius, width: diameter, height: diameter)
         let path = UIBezierPath(ovalIn: pointRect)
         path.fill()
+    }
+
+    private func fillGraphArea(_ graphPath: UIBezierPath?, using points: [CGPoint]) {
+        guard let clippingPath = graphPath?.copy() as? UIBezierPath,
+              let firstPoint = points.first,
+              let lastPoint = points.last
+        else {
+            return
+        }
+
+        clippingPath.addLine(to: CGPoint(x: firstPoint.x, y: bounds.maxY))
+        clippingPath.addLine(to: CGPoint(x: lastPoint.x, y: bounds.maxY))
+        clippingPath.close()
+        clippingPath.addClip()
+
+        guard let context = UIGraphicsGetCurrentContext() else {
+            return
+        }
+
+        let colors = [area.color.withAlphaComponent(0.6).cgColor, area.color.withAlphaComponent(0.1).cgColor]
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+
+        guard let gradient = CGGradient(
+            colorsSpace: colorSpace,
+            colors: colors as CFArray,
+            locations: nil)
+        else {
+            return
+        }
+
+        let hightestYPoint = points.max { $0.y > $1.y }
+        context.drawLinearGradient(
+            gradient,
+            start: CGPoint(x: 0, y: hightestYPoint!.y),
+            end: CGPoint(x: 0, y: bounds.maxY),
+            options: [])
+        context.restoreGState()
     }
 }
 
