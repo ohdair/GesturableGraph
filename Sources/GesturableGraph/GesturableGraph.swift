@@ -4,6 +4,7 @@ public class GesturableGraph: UIView {
     public let elements: [Double]
     public var distribution: Distribution
     public var type: GraphType
+    public var point: GraphPoint
     private var verticalPadding: VerticalPadding
 
     public init?(_ frame: CGRect = .zero, elements: [Double]) {
@@ -14,6 +15,7 @@ public class GesturableGraph: UIView {
         self.elements = elements
         self.distribution = .equalSpacing
         self.type = .curve
+        self.point = GraphPoint()
         self.verticalPadding = VerticalPadding()
         super.init(frame: frame)
     }
@@ -25,8 +27,8 @@ public class GesturableGraph: UIView {
     public override func draw(_ rect: CGRect) {
         super.draw(rect)
 
-        #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1).setStroke()
-        #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1).setFill()
+        point.color.setFill()
+        UIColor.white.setStroke()
 
         let points = convertToPoints()
         let curveLinePath = drawGraph(through: points)
@@ -35,8 +37,7 @@ public class GesturableGraph: UIView {
         curveLinePath?.stroke()
 
         points.forEach { point in
-            let pointPath = UIBezierPath(ovalIn: CGRect(x: point.x - 2, y: point.y - 2, width: 4, height: 4))
-            pointPath.fill()
+            drawPoint(point)
         }
     }
 
@@ -47,6 +48,14 @@ public class GesturableGraph: UIView {
         case .straight:
             return UIBezierPath(straight: points)
         }
+    }
+
+    private func drawPoint(_ point: CGPoint) {
+        let diameter = self.point.width
+        let radius = self.point.width / 2
+        let pointRect = CGRect(x: point.x - radius, y: point.y - radius, width: diameter, height: diameter)
+        let path = UIBezierPath(ovalIn: pointRect)
+        path.fill()
     }
 }
 
