@@ -85,6 +85,23 @@ extension GesturableGraph {
 
 //MARK: - UIBezierPath 생성하는
 public extension UIBezierPath {
+    convenience init?(line points: [CGPoint]) {
+        guard points.count > 1 else {
+            return nil
+        }
+
+        self.init()
+
+        move(to: points[0])
+
+        for i in 1..<points.count {
+            addLine(to: points[i])
+        }
+
+        lineCapStyle = .round
+        lineJoinStyle = .round
+    }
+
     convenience init?(quadCurve points: [CGPoint]) {
         guard points.count > 1 else {
             return nil
