@@ -31,11 +31,7 @@ public class GesturableGraph: UIView {
 
         let points = convertToPoints()
         drawGraph(through: points)
-
-        point.color.setFill()
-        points.forEach { point in
-            drawPoint(point)
-        }
+        drawPoints(points)
     }
 
     private func drawGraph(through points: [CGPoint]) {
@@ -51,6 +47,17 @@ public class GesturableGraph: UIView {
         line.color.setStroke()
         path?.lineWidth = line.width
         path?.stroke()
+    }
+
+    private func drawPoints(_ points: [CGPoint]) {
+        guard !point.isHidden else {
+            return
+        }
+
+        point.color.setFill()
+        points.forEach { point in
+            drawPoint(point)
+        }
     }
 
     private func drawPoint(_ point: CGPoint) {
@@ -107,7 +114,7 @@ extension GesturableGraph {
 }
 
 //MARK: - UIBezierPath 생성하는
-public extension UIBezierPath {
+extension UIBezierPath {
     convenience init?(straight points: [CGPoint]) {
         guard points.count > 1 else {
             return nil
