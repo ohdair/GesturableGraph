@@ -91,8 +91,7 @@ extension GesturableGraph {
     }
 
     private func fillGraphArea(_ graphPath: UIBezierPath?, using points: [CGPoint]) {
-        guard distribution == .equalSpacing,
-              let clippingPath = graphPath?.copy() as? UIBezierPath,
+        guard let clippingPath = graphPath?.copy() as? UIBezierPath,
               let firstPoint = points.first,
               let lastPoint = points.last
         else {
