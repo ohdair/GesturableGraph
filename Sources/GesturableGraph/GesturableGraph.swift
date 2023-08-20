@@ -33,8 +33,8 @@ public class GesturableGraph: UIView {
 
         let points = convertToPoints()
         let graphPath = drawGraph(through: points)
-        drawPoints(points)
         fillGraphArea(graphPath, using: points)
+        drawPoints(points)
     }
 }
 
