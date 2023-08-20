@@ -6,7 +6,7 @@ public class GesturableGraph: UIView {
     public var type: GraphType
     public var line: GraphLine
     public var point: GraphPoint
-    public var area: GraphArea
+    public var isFillAreaOfGraph: Bool
     private var verticalPadding: VerticalPadding
 
     public init?(_ frame: CGRect = .zero, elements: [Double]) {
@@ -19,7 +19,7 @@ public class GesturableGraph: UIView {
         self.type = .curve
         self.line = GraphLine()
         self.point = GraphPoint()
-        self.area = GraphArea()
+        self.isFillAreaOfGraph = true
         self.verticalPadding = VerticalPadding()
         super.init(frame: frame)
     }
@@ -91,15 +91,18 @@ extension GesturableGraph {
     }
 
     private func fillGraphArea(_ graphPath: UIBezierPath?, using points: [CGPoint]) {
-        guard let clippingPath = graphPath?.copy() as? UIBezierPath,
+        guard isFillAreaOfGraph,
+              let clippingPath = graphPath?.copy() as? UIBezierPath,
               let firstPoint = points.first,
               let lastPoint = points.last
         else {
             return
         }
 
+        clippingPath.addLine(to: CGPoint(x: lastPoint.x + line.width / 2, y: lastPoint.y))
         clippingPath.addLine(to: CGPoint(x: lastPoint.x, y: bounds.maxY))
         clippingPath.addLine(to: CGPoint(x: firstPoint.x, y: bounds.maxY))
+        clippingPath.addLine(to: CGPoint(x: firstPoint.x - line.width / 2, y: firstPoint.y))
         clippingPath.close()
         clippingPath.addClip()
 
@@ -107,7 +110,7 @@ extension GesturableGraph {
             return
         }
 
-        let colors = [area.color.withAlphaComponent(0.5).cgColor, area.color.withAlphaComponent(0.1).cgColor]
+        let colors = [line.color.withAlphaComponent(0.5).cgColor, line.color.withAlphaComponent(0.1).cgColor]
         let colorSpace = CGColorSpaceCreateDeviceRGB()
 
         guard let gradient = CGGradient(
