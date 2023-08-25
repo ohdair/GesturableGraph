@@ -104,8 +104,8 @@ extension GesturableGraph {
         }
 
         clippingPath.addLine(to: CGPoint(x: lastPoint.x + line.width / 2, y: lastPoint.y))
-        clippingPath.addLine(to: CGPoint(x: lastPoint.x, y: bounds.maxY))
-        clippingPath.addLine(to: CGPoint(x: firstPoint.x, y: bounds.maxY))
+        clippingPath.addLine(to: CGPoint(x: lastPoint.x + line.width / 2, y: bounds.maxY))
+        clippingPath.addLine(to: CGPoint(x: firstPoint.x - line.width / 2, y: bounds.maxY))
         clippingPath.addLine(to: CGPoint(x: firstPoint.x - line.width / 2, y: firstPoint.y))
         clippingPath.close()
         clippingPath.addClip()
