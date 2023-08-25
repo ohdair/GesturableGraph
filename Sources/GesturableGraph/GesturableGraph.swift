@@ -31,10 +31,17 @@ public class GesturableGraph: UIView {
     public override func draw(_ rect: CGRect) {
         super.draw(rect)
 
+        guard let mainContext = UIGraphicsGetCurrentContext() else {
+            return
+        }
+        mainContext.saveGState()
         let points = convertToPoints()
-        let graphPath = drawGraph(through: points)
+        guard let graphPath = graphPath(through: points) else {
+            return 
+        }
         fillGraphArea(graphPath, using: points)
-        drawPoints(points)
+        draw(graphPath)
+        draw(points)
     }
 }
 
@@ -53,25 +60,22 @@ extension GesturableGraph {
 
 //MARK: - 그래프 관련 draw하는 메서드
 extension GesturableGraph {
-    @discardableResult
-    private func drawGraph(through points: [CGPoint]) -> UIBezierPath? {
-        var path: UIBezierPath?
-
+    private func graphPath(through points: [CGPoint]) -> UIBezierPath? {
         switch type {
         case .curve:
-            path = UIBezierPath(quadCurve: points)
+            return UIBezierPath(quadCurve: points)
         case .straight:
-            path = UIBezierPath(straight: points)
+            return UIBezierPath(straight: points)
         }
-
-        line.color.setStroke()
-        path?.lineWidth = line.width
-        path?.stroke()
-
-        return path
     }
 
-    private func drawPoints(_ points: [CGPoint]) {
+    private func draw(_ graph: UIBezierPath) {
+        line.color.setStroke()
+        graph.lineWidth = line.width
+        graph.stroke()
+    }
+
+    private func draw(_ points: [CGPoint]) {
         guard !point.isHidden else {
             return
         }
