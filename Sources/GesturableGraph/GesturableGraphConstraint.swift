@@ -1,5 +1,5 @@
 //
-//  GestureGraphConstraint.swift
+//  GesturableGraphConstraint.swift
 //
 //
 //  Created by 박재우 on 8/29/23.
