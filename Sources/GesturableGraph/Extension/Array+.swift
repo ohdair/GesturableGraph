@@ -9,7 +9,8 @@ import Foundation
 
 extension Array where Element == Double {
     func calibrationTop(ofValue top: Double) -> Double? {
-        guard let max = self.max(),
+        guard top >= 0,
+              let max = self.max(),
               let min = self.min()
         else {
             return nil
@@ -19,7 +20,8 @@ extension Array where Element == Double {
     }
 
     func calibrationBottom(ofValue bottom: Double) -> Double? {
-        guard let max = self.max(),
+        guard bottom >= 0,
+              let max = self.max(),
               let min = self.min()
         else {
             return nil
