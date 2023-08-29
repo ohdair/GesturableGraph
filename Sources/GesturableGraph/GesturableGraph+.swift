@@ -1,11 +1,12 @@
-extension GesturableGraph {
+import UIKit
 
+extension GesturableGraph {
     // 0 means there is no separation
     // Increases in percentage based on the height of the graph.
     // The default value for top is 30 and bottom is 30.
     struct VerticalPadding {
-        var top: Double = 0.3
-        var bottom: Double = 0.3
+        var top: Double
+        var bottom: Double
     }
 
     public enum GraphType {
@@ -20,5 +21,21 @@ extension GesturableGraph {
         case equalSpacing = -1
         case aroundSpacing
         case evenSpacing
+    }
+
+    public struct GraphLine {
+        public var width: Double
+        public var color: UIColor
+    }
+
+    public struct GraphPoint {
+        public var width: Double
+        public var color: UIColor
+        public var isHidden: Bool
+    }
+
+    public struct GraphArea {
+        public var colors: [UIColor]
+        public var isFill: Bool
     }
 }

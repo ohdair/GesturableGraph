@@ -1,26 +1,30 @@
 import UIKit
 
-public class GesturableGraph: UIView {
-    public let elements: [Double]
-    public var distribution: Distribution
-    public var type: GraphType
-    public var line: GraphLine
-    public var point: GraphPoint
-    public var isFillAreaOfGraph: Bool
-    private var verticalPadding: VerticalPadding
+@MainActor
+public final class GesturableGraph: UIView {
+    private(set) public var elements = [Double]()
+    public var distribution = Distribution.equalSpacing
+    public var type = GraphType.curve
+    public var line = GraphLine(width: GesturableGraphConstraint.lineWidth,
+                                color: GesturableGraphConstraint.lineColor)
+    public var point = GraphPoint(width: GesturableGraphConstraint.pointWidth,
+                                  color: GesturableGraphConstraint.pointColor,
+                                  isHidden: GesturableGraphConstraint.pointIsHidden)
+    public var area = GraphArea(colors: GesturableGraphConstraint.areaColors,
+                                isFill: GesturableGraphConstraint.areaIsFill)
+    var verticalPadding = VerticalPadding(top: GesturableGraphConstraint.topOfPadding,
+                                                  bottom: GesturableGraphConstraint.bottomOfPadding)
 
-    public init?(_ frame: CGRect = .zero, elements: [Double]) {
+    public init?(elements: [Double]) {
         guard elements.count > 1 else {
             return nil
         }
 
+        super.init(frame: .zero)
         self.elements = elements
-        self.distribution = .equalSpacing
-        self.type = .curve
-        self.line = GraphLine()
-        self.point = GraphPoint()
-        self.isFillAreaOfGraph = true
-        self.verticalPadding = VerticalPadding()
+    }
+
+    override init(frame: CGRect) {
         super.init(frame: frame)
     }
 
@@ -34,18 +38,20 @@ public class GesturableGraph: UIView {
         guard let mainContext = UIGraphicsGetCurrentContext() else {
             return
         }
+
         mainContext.saveGState()
-        let points = convertToPoints()
-        guard let graphPath = graphPath(through: points) else {
-            return 
+
+        guard let points = convertToPoints(elements),
+              let graphPath = graphPath(through: points) else {
+            return
         }
+
         fillGraphArea(graphPath, using: points)
         draw(graphPath)
         draw(points)
     }
 }
 
-//MARK: - 속성 값을 변경하는 메서드
 extension GesturableGraph {
     public func paddingOfTop(scale: Double) {
         guard scale >= .zero else { return }
@@ -55,113 +61,5 @@ extension GesturableGraph {
     public func paddingOfBottom(scale: Double) {
         guard scale >= .zero else { return }
         verticalPadding.bottom = scale
-    }
-}
-
-//MARK: - 그래프 관련 draw하는 메서드
-extension GesturableGraph {
-    private func graphPath(through points: [CGPoint]) -> UIBezierPath? {
-        switch type {
-        case .curve:
-            return UIBezierPath(quadCurve: points)
-        case .straight:
-            return UIBezierPath(straight: points)
-        }
-    }
-
-    private func draw(_ graph: UIBezierPath) {
-        line.color.setStroke()
-        graph.lineWidth = line.width
-        graph.stroke()
-    }
-
-    private func draw(_ points: [CGPoint]) {
-        guard !point.isHidden else {
-            return
-        }
-
-        point.color.setFill()
-        points.forEach { point in
-            drawPoint(point)
-        }
-    }
-
-    private func drawPoint(_ point: CGPoint) {
-        let diameter = self.point.width
-        let radius = self.point.width / 2
-        let pointRect = CGRect(x: point.x - radius, y: point.y - radius, width: diameter, height: diameter)
-        let path = UIBezierPath(ovalIn: pointRect)
-        path.fill()
-    }
-
-    private func fillGraphArea(_ graphPath: UIBezierPath?, using points: [CGPoint]) {
-        guard isFillAreaOfGraph,
-              let clippingPath = graphPath?.copy() as? UIBezierPath,
-              let firstPoint = points.first,
-              let lastPoint = points.last
-        else {
-            return
-        }
-
-        clippingPath.addLine(to: CGPoint(x: lastPoint.x + line.width / 2, y: lastPoint.y))
-        clippingPath.addLine(to: CGPoint(x: lastPoint.x + line.width / 2, y: bounds.maxY))
-        clippingPath.addLine(to: CGPoint(x: firstPoint.x - line.width / 2, y: bounds.maxY))
-        clippingPath.addLine(to: CGPoint(x: firstPoint.x - line.width / 2, y: firstPoint.y))
-        clippingPath.close()
-        clippingPath.addClip()
-
-        guard let context = UIGraphicsGetCurrentContext() else {
-            return
-        }
-
-        let colors = [line.color.withAlphaComponent(0.5).cgColor, line.color.withAlphaComponent(0.1).cgColor]
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-
-        guard let gradient = CGGradient(
-            colorsSpace: colorSpace,
-            colors: colors as CFArray,
-            locations: nil)
-        else {
-            return
-        }
-
-        let hightestYPoint = points.max { $0.y > $1.y }
-        context.drawLinearGradient(
-            gradient,
-            start: CGPoint(x: 0, y: hightestYPoint!.y),
-            end: CGPoint(x: 0, y: bounds.maxY),
-            options: [])
-        context.restoreGState()
-    }
-}
-
-//MARK: - elements 값을 CGPoint로 변환시키는 메서드
-extension GesturableGraph {
-    private func convertToPoints() -> [CGPoint] {
-        return elements.enumerated()
-            .compactMap { index, element in
-                convertToPoint(from: element, ofIndex: index)
-            }
-    }
-
-    private func convertToPoint(from element: Double, ofIndex index: Int) -> CGPoint {
-        let x = calculateX(ofIndex: index)
-        let y = calculateY(ofElement: element)
-
-        return CGPoint(x: x, y: y)
-    }
-
-    private func calculateX(ofIndex index: Int) -> CGFloat {
-        return bounds.width * (CGFloat(distribution.rawValue + 1) / 2 + CGFloat(index)) / CGFloat(elements.count + distribution.rawValue)
-    }
-
-    private func calculateY(ofElement element: Double) -> CGFloat {
-        guard let calibrationTop = elements.calibrationTop(ofValue: verticalPadding.top),
-              let calibrationBottom =  elements.calibrationBottom(ofValue: verticalPadding.bottom)
-        else {
-            return CGFloat()
-        }
-
-        return bounds.height / (calibrationTop - calibrationBottom) * (calibrationTop - element)
     }
 }
