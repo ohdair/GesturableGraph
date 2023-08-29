@@ -16,6 +16,10 @@ extension Array where Element == Double {
             return nil
         }
 
+        if max == min {
+            return max + (1 + top)
+        }
+
         return max + ((max - min) * top)
     }
 
@@ -25,6 +29,10 @@ extension Array where Element == Double {
               let min = self.min()
         else {
             return nil
+        }
+
+        if max == min {
+            return max - (1 + bottom)
         }
 
         return min - ((max - min) * bottom)

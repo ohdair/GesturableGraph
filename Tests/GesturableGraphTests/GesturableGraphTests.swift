@@ -16,7 +16,7 @@ final class GesturableGraphTests: XCTestCase {
         let sample: [Double] = [1, 1, 1, 1, 1]
         let value: Double = 0.3
         let result = sample.calibrationTop(ofValue: value)
-        let expected: Double = 1.3
+        let expected: Double = 2.3
 
         XCTAssertEqual(result, expected)
     }
