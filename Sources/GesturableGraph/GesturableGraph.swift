@@ -152,7 +152,7 @@ extension GesturableGraph {
     }
 
     private func calculateX(ofIndex index: Int) -> CGFloat {
-        return bounds.width * (CGFloat(distribution.calibrationValue + 1) / 2 + CGFloat(index)) / CGFloat(elements.count + distribution.calibrationValue)
+        return bounds.width * (CGFloat(distribution.rawValue + 1) / 2 + CGFloat(index)) / CGFloat(elements.count + distribution.rawValue)
     }
 
     private func calculateY(ofElement element: Double) -> CGFloat {
