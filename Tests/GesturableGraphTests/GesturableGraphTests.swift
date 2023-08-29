@@ -77,7 +77,7 @@ final class GesturableGraphTests: XCTestCase {
     func test_calibrationBottom_요소가_양수와음수_혼합이어도_동작되는지_확인() throws {
         let sample: [Double] = [-3, -33, 19, -17, 30]
         let value: Double = 0.3
-        let result = sample.calibrationTop(ofValue: value)
+        let result = sample.calibrationBottom(ofValue: value)
         let expected: Double = -51.9
 
         XCTAssertEqual(result, expected)
