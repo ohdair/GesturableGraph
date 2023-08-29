@@ -10,7 +10,7 @@ public final class GesturableGraph: UIView {
     public var point = GraphPoint(width: GesturableGraphConstraint.pointWidth,
                                   color: GesturableGraphConstraint.pointColor,
                                   isHidden: GesturableGraphConstraint.pointIsHidden)
-    public var area = GraphArea(colors: GesturableGraphConstraint.areaColors,
+    public var area = GraphArea(_colors: GesturableGraphConstraint.areaColors,
                                 isFill: GesturableGraphConstraint.areaIsFill)
     var verticalPadding = VerticalPadding(top: GesturableGraphConstraint.topOfPadding,
                                                   bottom: GesturableGraphConstraint.bottomOfPadding)

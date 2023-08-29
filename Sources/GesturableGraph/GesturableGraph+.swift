@@ -35,7 +35,18 @@ extension GesturableGraph {
     }
 
     public struct GraphArea {
-        public var colors: [UIColor]
+        var _colors: [UIColor] = []
+        public var colors: [UIColor] {
+            get {
+                    return _colors
+                }
+                set {
+                    if newValue.isEmpty {
+                        return
+                    }
+                    _colors = newValue
+                }
+        }
         public var isFill: Bool
     }
 }

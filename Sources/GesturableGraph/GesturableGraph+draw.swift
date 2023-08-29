@@ -62,7 +62,7 @@ extension GesturableGraph {
             return
         }
 
-        let colors = area.colors
+        let colors = convertColors(area.colors)
         let colorSpace = CGColorSpaceCreateDeviceRGB()
 
         guard let gradient = CGGradient(
@@ -80,6 +80,14 @@ extension GesturableGraph {
             end: CGPoint(x: 0, y: bounds.maxY),
             options: [])
         context.restoreGState()
+    }
+
+    private func convertColors(_ colors: [UIColor]) -> [CGColor] {
+        guard colors.count != 1 else {
+            return colors.map { $0.cgColor } + colors.map { $0.cgColor }
+        }
+
+        return colors.map { $0.cgColor }
     }
 
     func convertToPoints(_ elements: [Double]) -> [CGPoint]? {
