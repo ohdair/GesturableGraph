@@ -20,4 +20,7 @@ struct GesturableGraphConstraint {
 
     static let topOfPadding = 0.3
     static let bottomOfPadding = 0.3
+
+    static var graphWidth: CGFloat?
+    static var graphHeight: CGFloat?
 }

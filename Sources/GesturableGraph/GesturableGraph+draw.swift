@@ -109,16 +109,21 @@ extension GesturableGraph {
     }
 
     private func calculateX(ofIndex index: Int) -> CGFloat {
-        return bounds.width * (CGFloat(distribution.rawValue + 1) / 2 + CGFloat(index)) / CGFloat(elements.count + distribution.rawValue)
+        guard let graphWidth = GesturableGraphConstraint.graphWidth else {
+            return CGFloat()
+        }
+
+        return graphWidth * (CGFloat(distribution.rawValue + 1) / 2 + CGFloat(index)) / CGFloat(elements.count + distribution.rawValue)
     }
 
     private func calculateY(ofElement element: Double) -> CGFloat {
         guard let calibrationTop = elements.calibrationTop(ofValue: verticalPadding.top),
-              let calibrationBottom =  elements.calibrationBottom(ofValue: verticalPadding.bottom)
+              let calibrationBottom = elements.calibrationBottom(ofValue: verticalPadding.bottom),
+              let graphHeight = GesturableGraphConstraint.graphHeight
         else {
             return CGFloat()
         }
 
-        return bounds.height / (calibrationTop - calibrationBottom) * (calibrationTop - element)
+        return graphHeight / (calibrationTop - calibrationBottom) * (calibrationTop - element)
     }
 }

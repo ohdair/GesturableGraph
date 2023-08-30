@@ -13,7 +13,7 @@ public final class GesturableGraph: UIView {
     public var area = GraphArea(_colors: GesturableGraphConstraint.areaColors,
                                 isFill: GesturableGraphConstraint.areaIsFill)
     var verticalPadding = VerticalPadding(top: GesturableGraphConstraint.topOfPadding,
-                                                  bottom: GesturableGraphConstraint.bottomOfPadding)
+                                          bottom: GesturableGraphConstraint.bottomOfPadding)
 
     public init?(elements: [Double]) {
         guard elements.count > 1 else {
@@ -30,6 +30,13 @@ public final class GesturableGraph: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override public func layoutSubviews() {
+        super.layoutSubviews()
+
+        GesturableGraphConstraint.graphWidth = self.frame.size.width
+        GesturableGraphConstraint.graphHeight = self.frame.size.height
     }
 
     public override func draw(_ rect: CGRect) {
