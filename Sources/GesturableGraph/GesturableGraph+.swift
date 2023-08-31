@@ -38,14 +38,14 @@ extension GesturableGraph {
         var _colors: [UIColor] = []
         public var colors: [UIColor] {
             get {
-                    return _colors
+                return _colors
+            }
+            set {
+                if newValue.isEmpty {
+                    return
                 }
-                set {
-                    if newValue.isEmpty {
-                        return
-                    }
-                    _colors = newValue
-                }
+                _colors = newValue
+            }
         }
         public var isFill: Bool
     }

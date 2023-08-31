@@ -215,7 +215,7 @@ final class GesturableGraphTests: XCTestCase {
             XCTFail("Failed initialzied GesturableGraph")
             return
         }
-        
+
         gesturableGraph.paddingOfBottom(scale: 0.5)
 
         let result = gesturableGraph.convertToPoints(elements)
