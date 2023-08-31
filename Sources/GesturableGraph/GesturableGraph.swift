@@ -60,10 +60,10 @@ public final class GesturableGraph: UIView {
 
     override public func layoutSubviews() {
         super.layoutSubviews()
-        
+
         GesturableGraphConstraint.graphWidth = self.frame.size.width
         GesturableGraphConstraint.graphHeight = self.frame.size.height
-        
+
         movingLine.frame = CGRect(x: 0, y: 0, width: 8, height: self.frame.size.height)
     }
 
@@ -88,7 +88,13 @@ public final class GesturableGraph: UIView {
     }
 
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touchedPoint = touches.first?.location(in: self) else { return }
+        guard let touchedPoint = touches.first?.location(in: self),
+              points.count > 1,
+              touchedPoint.x > points.first!.x,
+              touchedPoint.x < points.last!.x
+        else {
+            return
+        }
 
         movingLine.isHidden = false
         movingLine.frame.origin.x = touchedPoint.x
@@ -107,7 +113,8 @@ public final class GesturableGraph: UIView {
         guard let touchedPoint = touches.first?.location(in: self),
               points.count > 1,
               touchedPoint.x > points.first!.x,
-              touchedPoint.x < points.last!.x else {
+              touchedPoint.x < points.last!.x
+        else {
             return
         }
 
