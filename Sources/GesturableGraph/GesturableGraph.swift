@@ -96,12 +96,12 @@ public final class GesturableGraph: UIView {
             return
         }
 
+        movingLine.center = CGPoint(x: touchedPoint.x, y: movingLine.center.y)
         movingLine.isHidden = false
-        movingLine.frame.origin.x = touchedPoint.x
 
-        movingPoint.isHidden = false
         let circleY = UIBezierPath().movingPointY(from: touchedPoint.x, points: points)
         movingPoint.center = CGPoint(x: touchedPoint.x, y: circleY)
+        movingPoint.isHidden = false
     }
 
     public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -118,11 +118,10 @@ public final class GesturableGraph: UIView {
             return
         }
 
-        if touchedPoint.x >= 0, touchedPoint.x <= bounds.maxX {
-            movingLine.center = CGPoint(x: touchedPoint.x, y: movingLine.center.y)
-            let circleY = UIBezierPath().movingPointY(from: touchedPoint.x, points: points)
-            movingPoint.center = CGPoint(x: touchedPoint.x, y: circleY)
-        }
+        movingLine.center = CGPoint(x: touchedPoint.x, y: movingLine.center.y)
+
+        let circleY = UIBezierPath().movingPointY(from: touchedPoint.x, points: points)
+        movingPoint.center = CGPoint(x: touchedPoint.x, y: circleY)
     }
 }
 
