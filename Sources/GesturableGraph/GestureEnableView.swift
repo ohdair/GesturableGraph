@@ -42,10 +42,10 @@ class GestureEnableView: UIView {
         pointView.frame = CGRect(x: 0, y: 0,
                                  width: GesturableGraphConstraint.enablePointWidth,
                                  height: GesturableGraphConstraint.enablePointWidth)
-        pointView.backgroundColor = GesturableGraphConstraint.enablePointColor
+        pointView.backgroundColor = UIColor.red
         pointView.layer.cornerRadius = GesturableGraphConstraint.enablePointWidth / 2
         pointView.clipsToBounds = true
 
-        isHidden = true
+//        isHidden = true
     }
 }

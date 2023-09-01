@@ -92,7 +92,7 @@ public final class GesturableGraph: UIView {
     }
 
     public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        gestureEnableView.isHidden = true
+//        gestureEnableView.isHidden = true
     }
 
     public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
