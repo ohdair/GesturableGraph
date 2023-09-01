@@ -20,8 +20,8 @@ class GestureEnableView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setUI()
         setConfigure()
+        setUI()
     }
     
     required init?(coder: NSCoder) {
