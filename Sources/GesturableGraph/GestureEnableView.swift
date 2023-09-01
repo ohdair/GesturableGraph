@@ -31,19 +31,12 @@ class GestureEnableView: UIView {
     func setUI() {
         addSubview(lineView)
         addSubview(pointView)
-
-        lineView.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            lineView.topAnchor.constraint(equalTo: topAnchor),
-            lineView.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
     }
 
     func setConfigure() {
         lineView.frame = CGRect(x: 0, y: 0,
                                 width: GesturableGraphConstraint.enableLineWidth,
-                                height: 0)
+                                height: self.frame.height)
         lineView.backgroundColor = GesturableGraphConstraint.enableLineColor
 
         pointView.frame = CGRect(x: 0, y: 0,
