@@ -13,7 +13,7 @@ class GestureEnableView: UIView {
 
     override var center: CGPoint {
         didSet {
-            lineView.center = center
+            lineView.center = CGPoint(x: center.x, y: 0)
             pointView.center = center
         }
     }

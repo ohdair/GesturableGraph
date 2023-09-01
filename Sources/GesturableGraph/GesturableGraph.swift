@@ -46,7 +46,8 @@ public final class GesturableGraph: UIView {
         NSLayoutConstraint.activate([
             gestureEnableView.topAnchor.constraint(equalTo: topAnchor),
             gestureEnableView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            gestureEnableView.widthAnchor.constraint(equalToConstant: 10)
+            gestureEnableView.widthAnchor.constraint(equalToConstant: 10),
+            gestureEnableView.leadingAnchor.constraint(equalTo: leadingAnchor)
         ])
     }
 
