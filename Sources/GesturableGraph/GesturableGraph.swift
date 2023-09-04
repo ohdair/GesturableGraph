@@ -79,32 +79,48 @@ public final class GesturableGraph: UIView {
     }
 
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touchedPoint = touches.first?.location(in: self),
-              points.count > 1,
-              touchedPoint.x > points.first!.x,
-              touchedPoint.x < points.last!.x
+        guard let touchedPoint = touchedPoint(touches),
+              let y = pointY(from: touchedPoint.x)
         else {
             return
         }
-        let y = UIBezierPath().movingPointY(from: touchedPoint.x, points: points)
+
         gestureEnableView.moveTo(x: touchedPoint.x, y: y)
         gestureEnableView.isHidden = false
     }
 
     public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        gestureEnableView.isHidden = true
+        gestureEnableView.isHidden = true
     }
 
     public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touchedPoint = touches.first?.location(in: self),
-              points.count > 1,
-              touchedPoint.x > points.first!.x,
-              touchedPoint.x < points.last!.x
+        guard let touchedPoint = touchedPoint(touches),
+              let y = pointY(from: touchedPoint.x)
         else {
             return
         }
-        let y = UIBezierPath().movingPointY(from: touchedPoint.x, points: points)
+
         gestureEnableView.moveTo(x: touchedPoint.x, y: y)
+    }
+
+    private func touchedPoint(_ touches: Set<UITouch>) -> CGPoint? {
+        guard let touchedPoint = touches.first?.location(in: self),
+              touchedPoint.x > points.first!.x,
+              touchedPoint.x < points.last!.x
+        else {
+            return nil
+        }
+
+        return touchedPoint
+    }
+
+    private func pointY(from x: Double) -> Double? {
+        switch type {
+        case .curve:
+            return UIBezierPath().pointYOfCurveGraph(from: x, points: points)
+        case .straight:
+            return UIBezierPath().pointYOfStraightGraph(from: x, points: points)
+        }
     }
 }
 
