@@ -11,13 +11,6 @@ class GestureEnableView: UIView {
     var lineView = UIView()
     var pointView = UIView()
 
-    override var center: CGPoint {
-        didSet {
-//            lineView.center = CGPoint(x: center.x, y: 0)
-            pointView.center = center
-        }
-    }
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .blue
