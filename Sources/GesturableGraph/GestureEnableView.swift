@@ -13,7 +13,7 @@ class GestureEnableView: UIView {
 
     override var center: CGPoint {
         didSet {
-            lineView.center = CGPoint(x: center.x, y: 0)
+//            lineView.center = CGPoint(x: center.x, y: 0)
             pointView.center = center
         }
     }
@@ -32,17 +32,26 @@ class GestureEnableView: UIView {
     func setUI() {
         addSubview(lineView)
         addSubview(pointView)
+
+        lineView.translatesAutoresizingMaskIntoConstraints = false
+        pointView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            lineView.topAnchor.constraint(equalTo: topAnchor),
+            lineView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            lineView.widthAnchor.constraint(equalToConstant: GesturableGraphConstraint.enableLineWidth),
+            lineView.centerXAnchor.constraint(equalTo: centerXAnchor),
+
+            pointView.widthAnchor.constraint(equalToConstant: GesturableGraphConstraint.enablePointWidth),
+            pointView.heightAnchor.constraint(equalToConstant: GesturableGraphConstraint.enablePointWidth),
+            pointView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            pointView.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
     }
 
     func setConfigure() {
-        lineView.frame = CGRect(x: 0, y: 0,
-                                width: GesturableGraphConstraint.enableLineWidth,
-                                height: self.frame.height)
         lineView.backgroundColor = GesturableGraphConstraint.enableLineColor
 
-        pointView.frame = CGRect(x: 0, y: 0,
-                                 width: GesturableGraphConstraint.enablePointWidth,
-                                 height: GesturableGraphConstraint.enablePointWidth)
         pointView.backgroundColor = UIColor.red
         pointView.layer.cornerRadius = GesturableGraphConstraint.enablePointWidth / 2
         pointView.clipsToBounds = true
