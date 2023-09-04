@@ -58,4 +58,9 @@ class GestureEnableView: UIView {
 
 //        isHidden = true
     }
+
+    func moveTo(x: CGFloat, y: CGFloat) {
+        self.center.x = x
+        pointView.center.y = y
+    }
 }

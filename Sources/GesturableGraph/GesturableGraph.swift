@@ -87,7 +87,7 @@ public final class GesturableGraph: UIView {
             return
         }
         let y = UIBezierPath().movingPointY(from: touchedPoint.x, points: points)
-        gestureEnableView.center = CGPoint(x: touchedPoint.x, y: y)
+        gestureEnableView.moveTo(x: touchedPoint.x, y: y)
         gestureEnableView.isHidden = false
     }
 
@@ -104,7 +104,7 @@ public final class GesturableGraph: UIView {
             return
         }
         let y = UIBezierPath().movingPointY(from: touchedPoint.x, points: points)
-        gestureEnableView.center = CGPoint(x: touchedPoint.x, y: y)
+        gestureEnableView.moveTo(x: touchedPoint.x, y: y)
     }
 }
 
