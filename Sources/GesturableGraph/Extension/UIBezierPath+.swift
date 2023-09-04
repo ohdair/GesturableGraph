@@ -54,8 +54,8 @@ extension UIBezierPath {
         }
 
         let midPoint = midPoint(from: points[firstIndex], to: points[firstIndex + 1])
-        let p2 = pointX > midPoint.x ? midPoint : points[firstIndex]
-        let p0 = pointX > midPoint.x ? points[firstIndex + 1] : midPoint
+        let p2 = midPoint
+        let p0 = pointX > midPoint.x ? points[firstIndex + 1] : points[firstIndex]
 
         return cacultatedY(pointX: pointX, p0: p0, p2: p2)
     }
