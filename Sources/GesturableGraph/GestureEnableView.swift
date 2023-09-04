@@ -8,12 +8,12 @@
 import UIKit
 
 class GestureEnableView: UIView {
-    var lineView = UIView()
-    var pointView = UIView()
+    private let lineView = UIView()
+    private let pointView = UIView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .blue
+
         setConfigure()
         setUI()
     }
@@ -22,7 +22,7 @@ class GestureEnableView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setUI() {
+    private func setUI() {
         addSubview(lineView)
         addSubview(pointView)
 
@@ -42,14 +42,14 @@ class GestureEnableView: UIView {
         ])
     }
 
-    func setConfigure() {
+    private func setConfigure() {
         lineView.backgroundColor = GesturableGraphConstraint.enableLineColor
 
-        pointView.backgroundColor = UIColor.red
+        pointView.backgroundColor = GesturableGraphConstraint.enablePointColor
         pointView.layer.cornerRadius = GesturableGraphConstraint.enablePointWidth / 2
         pointView.clipsToBounds = true
 
-//        isHidden = true
+        isHidden = true
     }
 
     func moveTo(x: CGFloat, y: CGFloat) {
