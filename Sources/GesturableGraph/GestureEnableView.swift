@@ -8,8 +8,8 @@
 import UIKit
 
 class GestureEnableView: UIView {
-    private let lineView = UIView()
-    private let pointView = UIView()
+    let lineView = UIView()
+    let pointView = UIView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,21 +32,21 @@ class GestureEnableView: UIView {
         NSLayoutConstraint.activate([
             lineView.topAnchor.constraint(equalTo: topAnchor),
             lineView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            lineView.widthAnchor.constraint(equalToConstant: GesturableGraphConstraint.enableLineWidth),
+            lineView.widthAnchor.constraint(equalToConstant: Constraints.enableLineWidth),
             lineView.centerXAnchor.constraint(equalTo: centerXAnchor),
 
-            pointView.widthAnchor.constraint(equalToConstant: GesturableGraphConstraint.enablePointWidth),
-            pointView.heightAnchor.constraint(equalToConstant: GesturableGraphConstraint.enablePointWidth),
+            pointView.widthAnchor.constraint(equalToConstant: Constraints.enablePointWidth),
+            pointView.heightAnchor.constraint(equalToConstant: Constraints.enablePointWidth),
             pointView.centerXAnchor.constraint(equalTo: centerXAnchor),
             pointView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
 
     private func setConfigure() {
-        lineView.backgroundColor = GesturableGraphConstraint.enableLineColor
+        lineView.backgroundColor = Constraints.enableLineColor
 
-        pointView.backgroundColor = GesturableGraphConstraint.enablePointColor
-        pointView.layer.cornerRadius = GesturableGraphConstraint.enablePointWidth / 2
+        pointView.backgroundColor = Constraints.enablePointColor
+        pointView.layer.cornerRadius = Constraints.enablePointWidth / 2
         pointView.clipsToBounds = true
 
         isHidden = true
