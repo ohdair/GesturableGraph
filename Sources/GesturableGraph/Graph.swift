@@ -16,9 +16,21 @@ public struct Graph {
             configurePoints()
         }
     }
-    public var type: GraphType
-    public var distribution: Distribution
-    public var padding: Padding
+    public var type: GraphType {
+        didSet {
+            configurePoints()
+        }
+    }
+    public var distribution: Distribution {
+        didSet {
+            configurePoints()
+        }
+    }
+    public var padding: Padding {
+        didSet {
+            configurePoints()
+        }
+    }
 
     init?(elements: [Double],
           type: GraphType = .curve,
