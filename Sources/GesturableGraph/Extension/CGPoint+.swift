@@ -13,6 +13,6 @@ extension CGPoint {
     }
 
     func controlPoint(from point: CGPoint) -> CGPoint {
-        return CGPoint(x: midPoint(from: point).x, y: self.x)
+        return CGPoint(x: midPoint(from: point).x, y: self.y)
     }
 }
