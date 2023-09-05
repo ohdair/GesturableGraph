@@ -1,5 +1,5 @@
 //
-//  GesturableGraphConstraint.swift
+//  Constraints.swift
 //
 //
 //  Created by 박재우 on 8/29/23.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct GesturableGraphConstraint {
+struct Constraints {
     static let lineWidth = 2.0
     static let lineColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
 
