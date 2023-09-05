@@ -16,24 +16,7 @@ public final class GesturableGraph: UIView {
     var verticalPadding = VerticalPadding(top: GesturableGraphConstraint.topOfPadding,
                                           bottom: GesturableGraphConstraint.bottomOfPadding)
 
-    private var movingLine: UIView = {
-        let view = UIView()
-        view.isHidden = true
-        view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        return view
-    }()
-
-    private var movingPoint: UIView = {
-        let view = UIView()
-        view.isHidden = true
-        view.backgroundColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
-        view.frame = CGRect(x: 0, y: 0, width: 10, height: 10)
-        view.layer.cornerRadius = view.layer.bounds.width / 2
-        view.layer.borderColor = #colorLiteral(red: 0.3098039329, green: 0.2039215714, blue: 0.03921568766, alpha: 1)
-        view.layer.borderWidth = 1.5
-        view.clipsToBounds = true
-        return view
-    }()
+    private var gestureEnableView = GestureEnableView()
 
     public init?(elements: [Double]) {
         guard elements.count > 1 else {
@@ -43,19 +26,29 @@ public final class GesturableGraph: UIView {
         super.init(frame: .zero)
         self.elements = elements
 
-        addSubview(movingLine)
-        addSubview(movingPoint)
+        setUI()
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        addSubview(movingLine)
-        addSubview(movingPoint)
+        setUI()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setUI() {
+        addSubview(gestureEnableView)
+        gestureEnableView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            gestureEnableView.topAnchor.constraint(equalTo: topAnchor),
+            gestureEnableView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            gestureEnableView.widthAnchor.constraint(equalToConstant: 10),
+            gestureEnableView.leadingAnchor.constraint(equalTo: leadingAnchor)
+        ])
     }
 
     override public func layoutSubviews() {
@@ -63,8 +56,6 @@ public final class GesturableGraph: UIView {
 
         GesturableGraphConstraint.graphWidth = self.frame.size.width
         GesturableGraphConstraint.graphHeight = self.frame.size.height
-
-        movingLine.frame = CGRect(x: 0, y: 0, width: 8, height: self.frame.size.height)
     }
 
     public override func draw(_ rect: CGRect) {
@@ -88,40 +79,48 @@ public final class GesturableGraph: UIView {
     }
 
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touchedPoint = touches.first?.location(in: self),
-              points.count > 1,
-              touchedPoint.x > points.first!.x,
-              touchedPoint.x < points.last!.x
+        guard let touchedPoint = touchedPoint(touches),
+              let y = pointY(from: touchedPoint.x)
         else {
             return
         }
 
-        movingLine.center = CGPoint(x: touchedPoint.x, y: movingLine.center.y)
-        movingLine.isHidden = false
-
-        let circleY = UIBezierPath().movingPointY(from: touchedPoint.x, points: points)
-        movingPoint.center = CGPoint(x: touchedPoint.x, y: circleY)
-        movingPoint.isHidden = false
+        gestureEnableView.moveTo(x: touchedPoint.x, y: y)
+        gestureEnableView.isHidden = false
     }
 
     public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        movingLine.isHidden = true
-        movingPoint.isHidden = true
+        gestureEnableView.isHidden = true
     }
 
     public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touchedPoint = touches.first?.location(in: self),
-              points.count > 1,
-              touchedPoint.x > points.first!.x,
-              touchedPoint.x < points.last!.x
+        guard let touchedPoint = touchedPoint(touches),
+              let y = pointY(from: touchedPoint.x)
         else {
             return
         }
 
-        movingLine.center = CGPoint(x: touchedPoint.x, y: movingLine.center.y)
+        gestureEnableView.moveTo(x: touchedPoint.x, y: y)
+    }
 
-        let circleY = UIBezierPath().movingPointY(from: touchedPoint.x, points: points)
-        movingPoint.center = CGPoint(x: touchedPoint.x, y: circleY)
+    private func touchedPoint(_ touches: Set<UITouch>) -> CGPoint? {
+        guard let touchedPoint = touches.first?.location(in: self),
+              touchedPoint.x > points.first!.x,
+              touchedPoint.x < points.last!.x
+        else {
+            return nil
+        }
+
+        return touchedPoint
+    }
+
+    private func pointY(from x: Double) -> Double? {
+        switch type {
+        case .curve:
+            return UIBezierPath().pointYOfCurveGraph(from: x, points: points)
+        case .straight:
+            return UIBezierPath().pointYOfStraightGraph(from: x, points: points)
+        }
     }
 }
 
