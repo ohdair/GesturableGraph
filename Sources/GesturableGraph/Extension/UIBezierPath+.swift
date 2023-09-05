@@ -38,7 +38,7 @@ extension UIBezierPath {
         for i in 1..<points.count {
             let p2 = points[i].midPoint(from: p0)
 
-            addQuadCurve(to: p2, controlPoint: p2.controlPoint(from: p0))
+            addQuadCurve(to: p2, controlPoint: p0.controlPoint(from: p2))
             addQuadCurve(to: points[i], controlPoint: points[i].controlPoint(from: p2))
 
             p0 = points[i]
@@ -75,7 +75,7 @@ extension UIBezierPath {
     }
 
     private func cacultatedY(pointX: Double, p0: CGPoint, p2: CGPoint) -> Double {
-        let p1 = p2.controlPoint(from: p0)
+        let p1 = p0.controlPoint(from: p2)
         let t = (pointX - p0.x) / (p2.x - p0.x)
         return pow(1 - t, 2) * p0.y + 2 * (1 - t) * t * p1.y + pow(t, 2) * p2.y
     }
