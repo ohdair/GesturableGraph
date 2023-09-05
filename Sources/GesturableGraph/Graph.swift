@@ -33,6 +33,8 @@ public struct Graph {
         self.type = type
         self.distribution = distribution
         self.padding = padding
+
+        configurePoints()
     }
 
     init() {
