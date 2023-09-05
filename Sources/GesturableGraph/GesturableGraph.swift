@@ -1,35 +1,39 @@
 import UIKit
 
-@MainActor
 public final class GesturableGraph: UIView {
     private(set) public var elements = [Double]()
-    private var points = [CGPoint]()
-    public var distribution = Distribution.equalSpacing
-    public var type = GraphType.curve
-    public var line = GraphLine(width: GesturableGraphConstraint.lineWidth,
-                                color: GesturableGraphConstraint.lineColor)
-    public var point = GraphPoint(width: GesturableGraphConstraint.pointWidth,
-                                  color: GesturableGraphConstraint.pointColor,
-                                  isHidden: GesturableGraphConstraint.pointIsHidden)
-    public var area = GraphArea(_colors: GesturableGraphConstraint.areaColors,
-                                isFill: GesturableGraphConstraint.areaIsFill)
-    var verticalPadding = VerticalPadding(top: GesturableGraphConstraint.topOfPadding,
-                                          bottom: GesturableGraphConstraint.bottomOfPadding)
+
+    public lazy var distribution = graph.distribution
+    public lazy var type = graph.type
+    public lazy var padding = graph.padding
+    private lazy var points = {
+        graph.points.map { x, y in
+            CGPoint(x: bounds.width * x, y: bounds.height * y)
+        }
+    }()
+
+    public var line = GraphLine()
+    public var point = GraphPoint()
+    public var area = GraphArea()
 
     private var gestureEnableView = GestureEnableView()
+    private var graph: Graph
 
     public init?(elements: [Double]) {
-        guard elements.count > 1 else {
+        guard let graph = Graph(elements: elements) else {
             return nil
         }
 
+        self.graph = graph
+
         super.init(frame: .zero)
-        self.elements = elements
 
         setUI()
     }
 
     override init(frame: CGRect) {
+        self.graph = Graph()
+
         super.init(frame: frame)
 
         setUI()
@@ -54,8 +58,8 @@ public final class GesturableGraph: UIView {
     override public func layoutSubviews() {
         super.layoutSubviews()
 
-        GesturableGraphConstraint.graphWidth = self.frame.size.width
-        GesturableGraphConstraint.graphHeight = self.frame.size.height
+        Constraints.graphWidth = self.frame.size.width
+        Constraints.graphHeight = self.frame.size.height
     }
 
     public override func draw(_ rect: CGRect) {
@@ -67,12 +71,10 @@ public final class GesturableGraph: UIView {
 
         mainContext.saveGState()
 
-        guard let points = convertToPoints(elements),
-              let graphPath = graphPath(through: points) else {
+        guard let graphPath = graphPath(through: points) else {
             return
         }
 
-        self.points = points
         fillGraphArea(graphPath, using: points)
         draw(graphPath)
         draw(points)
@@ -121,17 +123,5 @@ public final class GesturableGraph: UIView {
         case .straight:
             return UIBezierPath().pointYOfStraightGraph(from: x, points: points)
         }
-    }
-}
-
-extension GesturableGraph {
-    public func paddingOfTop(scale: Double) {
-        guard scale >= .zero else { return }
-        verticalPadding.top = scale
-    }
-
-    public func paddingOfBottom(scale: Double) {
-        guard scale >= .zero else { return }
-        verticalPadding.bottom = scale
     }
 }

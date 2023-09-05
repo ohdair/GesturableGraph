@@ -83,47 +83,10 @@ extension GesturableGraph {
     }
 
     private func convertColors(_ colors: [UIColor]) -> [CGColor] {
-        guard colors.count != 1 else {
+        if colors.count == 1 {
             return colors.map { $0.cgColor } + colors.map { $0.cgColor }
         }
 
         return colors.map { $0.cgColor }
-    }
-
-    func convertToPoints(_ elements: [Double]) -> [CGPoint]? {
-        guard elements.count > 1 else {
-            return nil
-        }
-
-        return elements.enumerated()
-            .compactMap { index, element in
-                convertToPoint(from: element, ofIndex: index)
-            }
-    }
-
-    private func convertToPoint(from element: Double, ofIndex index: Int) -> CGPoint {
-        let x = calculateX(ofIndex: index)
-        let y = calculateY(ofElement: element)
-
-        return CGPoint(x: x, y: y)
-    }
-
-    private func calculateX(ofIndex index: Int) -> CGFloat {
-        guard let graphWidth = GesturableGraphConstraint.graphWidth else {
-            return CGFloat()
-        }
-
-        return graphWidth * (CGFloat(distribution.rawValue + 1) / 2 + CGFloat(index)) / CGFloat(elements.count + distribution.rawValue)
-    }
-
-    private func calculateY(ofElement element: Double) -> CGFloat {
-        guard let calibrationTop = elements.calibrationTop(ofValue: verticalPadding.top),
-              let calibrationBottom = elements.calibrationBottom(ofValue: verticalPadding.bottom),
-              let graphHeight = GesturableGraphConstraint.graphHeight
-        else {
-            return CGFloat()
-        }
-
-        return graphHeight / (calibrationTop - calibrationBottom) * (calibrationTop - element)
     }
 }
