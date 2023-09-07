@@ -1,8 +1,6 @@
 import UIKit
 
 public final class GesturableGraph: UIView, Gesturable {
-    var gesture: CGPoint?
-
     private(set) public var elements = [Double]()
 
     public lazy var distribution = graph.distribution {
@@ -29,6 +27,8 @@ public final class GesturableGraph: UIView, Gesturable {
     public var line = GraphLine()
     public var point = GraphPoint()
     public var area = GraphArea()
+
+    internal var gesture: CGPoint?
 
     private var gestureEnableView = GestureEnableView()
     private var graph: Graph
@@ -69,13 +69,6 @@ public final class GesturableGraph: UIView, Gesturable {
         ])
     }
 
-    override public func layoutSubviews() {
-        super.layoutSubviews()
-
-        Constraints.graphWidth = self.frame.size.width
-        Constraints.graphHeight = self.frame.size.height
-    }
-
     public override func draw(_ rect: CGRect) {
         super.draw(rect)
 
@@ -97,9 +90,10 @@ public final class GesturableGraph: UIView, Gesturable {
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         gesture = touches.first?.location(in: self)
 
-        if let contactPoint = contactPoint(in: graph) {
-            gestureEnableView.moveTo(contactPoint)
+        if let point = calculatedPoint(in: graph) {
+            gestureEnableView.moveTo(point)
             gestureEnableView.isHidden = false
+            gestureEnableView.pointView.isHidden = (point == gesture)
         }
     }
 
@@ -110,8 +104,9 @@ public final class GesturableGraph: UIView, Gesturable {
     public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         gesture = touches.first?.location(in: self)
 
-        if let contactPoint = contactPoint(in: graph) {
-            gestureEnableView.moveTo(contactPoint)
+        if let point = calculatedPoint(in: graph) {
+            gestureEnableView.moveTo(point)
+            gestureEnableView.pointView.isHidden = (point == gesture)
         }
     }
 }

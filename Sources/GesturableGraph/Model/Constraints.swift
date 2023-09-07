@@ -21,9 +21,6 @@ struct Constraints {
     static let topOfPadding = 0.3
     static let bottomOfPadding = 0.3
 
-    static var graphWidth: CGFloat?
-    static var graphHeight: CGFloat?
-
     static let enableLineWidth = 4.0
     static let enableLineColor = #colorLiteral(red: 1, green: 0.6745654941, blue: 0.1722558439, alpha: 1)
     static let enablePointWidth = 10.0

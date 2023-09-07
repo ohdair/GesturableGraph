@@ -5,14 +5,34 @@
 //  Created by 박재우 on 9/1/23.
 //
 
-import UIKit
+import Foundation
 
 protocol Gesturable {
     var gesture: CGPoint? { get set }
 }
 
 extension Gesturable {
-    func contactPoint(in graph: Graph) -> CGPoint? {
+    func calculatedPoint(in graph: Graph) -> CGPoint? {
+        guard isIncludedGesture(in: graph) else {
+            return gesture
+        }
+
+        return contactPoint(in: graph)
+    }
+    
+    private func isIncludedGesture(in graph: Graph) -> Bool {
+        guard let gesture,
+              let firstPoint = graph.points.first,
+              let lastPoint = graph.points.last,
+              gesture.x > firstPoint.x,
+              gesture.x < lastPoint.x else {
+            return false
+        }
+
+        return true
+    }
+
+    private func contactPoint(in graph: Graph) -> CGPoint {
         let points = graph.points.map { x, y in
             CGPoint(x: x, y: y)
         }
@@ -25,25 +45,24 @@ extension Gesturable {
         }
     }
 
-    private func contactPointOfStraightGraph(accordingToPoints points: [CGPoint]) -> CGPoint? {
+    private func contactPointOfStraightGraph(accordingToPoints points: [CGPoint]) -> CGPoint {
         guard let gesture,
               let index = points.lastIndex(where: { $0.x < gesture.x }) else {
-            return nil
+            fatalError("This is an error that should not occur.")
         }
 
         let p0 = points[index]
         let p1 = points[index + 1]
-
         let slope = (p1.y - p0.y) / (p1.x - p0.x)
         let intercept = p0.y - slope * p0.x
 
         return CGPoint(x: gesture.x, y: slope * gesture.x + intercept)
     }
 
-    private func contactPointOfCurveGraph(accordingToPoints points: [CGPoint]) -> CGPoint? {
+    private func contactPointOfCurveGraph(accordingToPoints points: [CGPoint]) -> CGPoint {
         guard let gesture,
               let index = points.lastIndex(where: { $0.x < gesture.x }) else {
-            return nil
+            fatalError("This is an error that should not occur.")
         }
 
         let midPoint = points[index + 1].midPoint(from: points[index])
