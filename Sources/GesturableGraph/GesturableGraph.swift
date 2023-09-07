@@ -1,6 +1,8 @@
 import UIKit
 
-public final class GesturableGraph: UIView {
+public final class GesturableGraph: UIView, Gesturable {
+    var gesture: CGPoint?
+
     private(set) public var elements = [Double]()
 
     public lazy var distribution = graph.distribution {
@@ -93,14 +95,12 @@ public final class GesturableGraph: UIView {
     }
 
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touchedPoint = touchedPoint(touches),
-              let y = pointY(from: touchedPoint.x)
-        else {
-            return
-        }
+        gesture = touches.first?.location(in: self)
 
-        gestureEnableView.moveTo(x: touchedPoint.x, y: y)
-        gestureEnableView.isHidden = false
+        if let contactPoint = contactPoint(in: graph) {
+            gestureEnableView.moveTo(contactPoint)
+            gestureEnableView.isHidden = false
+        }
     }
 
     public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -108,32 +108,10 @@ public final class GesturableGraph: UIView {
     }
 
     public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touchedPoint = touchedPoint(touches),
-              let y = pointY(from: touchedPoint.x)
-        else {
-            return
-        }
+        gesture = touches.first?.location(in: self)
 
-        gestureEnableView.moveTo(x: touchedPoint.x, y: y)
-    }
-
-    private func touchedPoint(_ touches: Set<UITouch>) -> CGPoint? {
-        guard let touchedPoint = touches.first?.location(in: self),
-              touchedPoint.x > points.first!.x,
-              touchedPoint.x < points.last!.x
-        else {
-            return nil
-        }
-
-        return touchedPoint
-    }
-
-    private func pointY(from x: Double) -> Double? {
-        switch type {
-        case .curve:
-            return UIBezierPath().pointYOfCurveGraph(from: x, points: points)
-        case .straight:
-            return UIBezierPath().pointYOfStraightGraph(from: x, points: points)
+        if let contactPoint = contactPoint(in: graph) {
+            gestureEnableView.moveTo(contactPoint)
         }
     }
 }
