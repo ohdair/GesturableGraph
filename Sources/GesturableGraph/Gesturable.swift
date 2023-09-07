@@ -14,7 +14,7 @@ protocol Gesturable {
 extension Gesturable {
     func calculatedPoint(in graph: Graph) -> CGPoint? {
         guard isIncludedGesture(in: graph) else {
-            return gesture
+            return nil
         }
 
         return contactPoint(in: graph)

@@ -93,7 +93,6 @@ public final class GesturableGraph: UIView, Gesturable {
         if let point = calculatedPoint(in: graph) {
             gestureEnableView.moveTo(point)
             gestureEnableView.isHidden = false
-            gestureEnableView.pointView.isHidden = (point == gesture)
         }
     }
 
@@ -106,7 +105,6 @@ public final class GesturableGraph: UIView, Gesturable {
 
         if let point = calculatedPoint(in: graph) {
             gestureEnableView.moveTo(point)
-            gestureEnableView.pointView.isHidden = (point == gesture)
         }
     }
 }
