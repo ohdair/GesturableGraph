@@ -13,17 +13,21 @@ protocol Gesturable {
 
 extension Gesturable {
     func calculatedPoint(in graph: Graph, withSize size: CGRect) -> CGPoint? {
-        guard isIncludedGesture(in: graph) else {
+        let pointsOnGraph = graph.points.map { (x, y) in
+            CGPoint(x: size.width * x, y: size.height * y)
+        }
+
+        guard isIncludedGesture(usingPoints: pointsOnGraph) else {
             return nil
         }
 
-        return contactPoint(in: graph, withSize: size)
+        return contactPoint(ofTypeGraph: graph.type, usingPoints: pointsOnGraph)
     }
     
-    private func isIncludedGesture(in graph: Graph) -> Bool {
+    private func isIncludedGesture(usingPoints points: [CGPoint]) -> Bool {
         guard let gesture,
-              let firstPoint = graph.points.first,
-              let lastPoint = graph.points.last,
+              let firstPoint = points.first,
+              let lastPoint = points.last,
               gesture.x > firstPoint.x,
               gesture.x < lastPoint.x else {
             return false
@@ -32,12 +36,8 @@ extension Gesturable {
         return true
     }
 
-    private func contactPoint(in graph: Graph, withSize size: CGRect) -> CGPoint {
-        let points = graph.points.map { x, y in
-            CGPoint(x: size.width * x, y: size.height * y)
-        }
-
-        switch graph.type {
+    private func contactPoint(ofTypeGraph type: Graph.GraphType, usingPoints points: [CGPoint]) -> CGPoint {
+        switch type {
         case .curve:
             return contactPointOfCurveGraph(accordingToPoints: points)
         case .straight:
