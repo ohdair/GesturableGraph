@@ -90,7 +90,7 @@ public final class GesturableGraph: UIView, Gesturable {
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         gesture = touches.first?.location(in: self)
 
-        if let point = calculatedPoint(in: graph) {
+        if let point = calculatedPoint(in: graph, withSize: bounds) {
             gestureEnableView.moveTo(point)
             gestureEnableView.isHidden = false
         }
@@ -103,7 +103,7 @@ public final class GesturableGraph: UIView, Gesturable {
     public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         gesture = touches.first?.location(in: self)
 
-        if let point = calculatedPoint(in: graph) {
+        if let point = calculatedPoint(in: graph, withSize: bounds) {
             gestureEnableView.moveTo(point)
         }
     }

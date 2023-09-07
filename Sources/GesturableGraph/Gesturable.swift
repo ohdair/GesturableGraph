@@ -12,12 +12,12 @@ protocol Gesturable {
 }
 
 extension Gesturable {
-    func calculatedPoint(in graph: Graph) -> CGPoint? {
+    func calculatedPoint(in graph: Graph, withSize size: CGRect) -> CGPoint? {
         guard isIncludedGesture(in: graph) else {
             return nil
         }
 
-        return contactPoint(in: graph)
+        return contactPoint(in: graph, withSize: size)
     }
     
     private func isIncludedGesture(in graph: Graph) -> Bool {
@@ -32,9 +32,9 @@ extension Gesturable {
         return true
     }
 
-    private func contactPoint(in graph: Graph) -> CGPoint {
+    private func contactPoint(in graph: Graph, withSize size: CGRect) -> CGPoint {
         let points = graph.points.map { x, y in
-            CGPoint(x: x, y: y)
+            CGPoint(x: size.width * x, y: size.height * y)
         }
 
         switch graph.type {
