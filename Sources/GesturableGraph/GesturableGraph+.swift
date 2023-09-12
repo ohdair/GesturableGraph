@@ -13,10 +13,10 @@ extension GesturableGraph {
     }
 
     public struct GraphArea {
-        public var colors: [UIColor] = Constraints.areaColors {
+        public var gradientColors: [UIColor] = Constraints.areaColors {
             didSet {
-                if colors.isEmpty {
-                    colors = oldValue
+                if gradientColors.isEmpty {
+                    gradientColors = oldValue
                 }
             }
         }

@@ -62,7 +62,7 @@ extension GesturableGraph {
             return
         }
 
-        let colors = convertColors(area.colors)
+        let colors = convertColors(area.gradientColors)
         let colorSpace = CGColorSpaceCreateDeviceRGB()
 
         guard let gradient = CGGradient(
