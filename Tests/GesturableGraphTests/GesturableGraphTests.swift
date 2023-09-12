@@ -88,7 +88,7 @@ final class GesturableGraphTests: XCTestCase {
     //MARK: - convertToPoints Test
     // elements에 맞게 설정된 graph
     private func graphForTest(elements: [Double]) -> Graph? {
-        let graph = Graph(elements: elements)
+        var graph = Graph(elements: elements)
         graph?.padding.top = 0
         graph?.padding.bottom = 0
         graph?.distribution = .equalSpacing
@@ -157,7 +157,7 @@ final class GesturableGraphTests: XCTestCase {
         let elements: [Double] = [0, -3, 3, -3, 7]
         let width: Double = Double(elements.count - 1) * 100
         let height: Double = (elements.max()! - elements.min()!) * 100
-        guard let graph = graphForTest(elements: elements) else {
+        guard var graph = graphForTest(elements: elements) else {
             XCTFail("Failed initialzied graph")
             return
         }
@@ -178,7 +178,7 @@ final class GesturableGraphTests: XCTestCase {
         let elements: [Double] = [0, -3, 3, -3, 7, 1, -1, 3, 7]
         let width: Double = Double(elements.count - 1) * 100
         let height: Double = (elements.max()! - elements.min()!) * 100
-        guard let graph = graphForTest(elements: elements) else {
+        guard var graph = graphForTest(elements: elements) else {
             XCTFail("Failed initialzied graph")
             return
         }
@@ -199,7 +199,7 @@ final class GesturableGraphTests: XCTestCase {
         let elements: [Double] = [1, 2, -1, 3]
         let width: Double = Double(elements.count - 1) * 100
         let height: Double = (elements.max()! - elements.min()!) * 100
-        guard let graph = graphForTest(elements: elements) else {
+        guard var graph = graphForTest(elements: elements) else {
             XCTFail("Failed initialzied graph")
             return
         }
@@ -220,7 +220,7 @@ final class GesturableGraphTests: XCTestCase {
         let elements: [Double] = [1.25, 2, -1]
         let width: Double = Double(elements.count - 1) * 100
         let height: Double = (elements.max()! - elements.min()!) * 100
-        guard let graph = graphForTest(elements: elements) else {
+        guard var graph = graphForTest(elements: elements) else {
             XCTFail("Failed initialzied graph")
             return
         }

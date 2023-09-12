@@ -58,13 +58,13 @@ class GestureEnableView: UIView {
     }
 
     func updatePointView(width: Double, color: UIColor) {
-        pointView.frame.size.width = width
+        pointView.widthAnchor.constraint(equalToConstant: width).isActive = true
         pointView.backgroundColor = color
         setNeedsLayout()
     }
 
     func updateLineView(width: Double, color: UIColor) {
-        lineView.frame.size.width = width
+        lineView.widthAnchor.constraint(equalToConstant: width).isActive = true
         lineView.backgroundColor = color
         setNeedsLayout()
     }
