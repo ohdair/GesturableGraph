@@ -56,4 +56,16 @@ class GestureEnableView: UIView {
         self.center.x = point.x
         pointView.center.y = point.y
     }
+
+    func updatePointView(width: Double, color: UIColor) {
+        pointView.frame.size.width = width
+        pointView.backgroundColor = color
+        setNeedsLayout()
+    }
+
+    func updateLineView(width: Double, color: UIColor) {
+        lineView.frame.size.width = width
+        lineView.backgroundColor = color
+        setNeedsLayout()
+    }
 }

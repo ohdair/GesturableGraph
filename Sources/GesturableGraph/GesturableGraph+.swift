@@ -22,4 +22,14 @@ extension GesturableGraph {
         }
         public var isFill: Bool = Constraints.areaIsFill
     }
+
+    public struct GraphEnablePoint {
+        public var width: Double = Constraints.enablePointWidth
+        public var color: UIColor = Constraints.enablePointColor
+    }
+
+    public struct GraphEnableLine {
+        public var width: Double = Constraints.enableLineWidth
+        public var color: UIColor = Constraints.enableLineColor
+    }
 }

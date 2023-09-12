@@ -15,6 +15,18 @@ public final class GesturableGraph: UIView, Gesturable {
     public var line = GraphLine()
     public var point = GraphPoint()
     public var area = GraphArea()
+    public var enablePoint = GraphEnablePoint() {
+        didSet {
+            gestureEnableView.updatePointView(width: enablePoint.width,
+                                              color: enablePoint.color)
+        }
+    }
+    public var enableLine = GraphEnableLine() {
+        didSet {
+            gestureEnableView.updateLineView(width: enableLine.width,
+                                              color: enableLine.color)
+        }
+    }
 
     internal var gesture: CGPoint?
 
