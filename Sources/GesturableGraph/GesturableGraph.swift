@@ -3,21 +3,9 @@ import UIKit
 public final class GesturableGraph: UIView, Gesturable {
     private(set) public var elements = [Double]()
 
-    public lazy var distribution = graph.distribution {
-        didSet {
-            graph.distribution = distribution
-        }
-    }
-    public lazy var type = graph.type {
-        didSet {
-            graph.type = type
-        }
-    }
-    public lazy var padding = graph.padding {
-        didSet {
-            graph.padding = padding
-        }
-    }
+    public lazy var distribution = graph.distribution
+    public lazy var type = graph.type
+    public lazy var padding = graph.padding
     private lazy var points = {
         graph.points.map { x, y in
             CGPoint(x: bounds.width * x, y: bounds.height * y)

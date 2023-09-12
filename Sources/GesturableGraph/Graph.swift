@@ -7,10 +7,10 @@
 
 import UIKit
 
-public struct Graph {
-    public typealias Point = (x: Double, y: Double)
+public class Graph {
+    typealias Point = (x: Double, y: Double)
 
-    private(set) public var points: [Point]
+    private(set) var points: [Point]
     public var elements: [Double] {
         didSet {
             configurePoints()
@@ -39,7 +39,7 @@ public struct Graph {
         guard elements.count > 1 else {
             return nil
         }
-        
+
         self.points = []
         self.elements = elements
         self.type = type
@@ -57,8 +57,8 @@ public struct Graph {
         self.padding = Padding()
     }
 
-    private mutating func configurePoints() {
-        self.points = elements.enumerated()
+    private func configurePoints() {
+        points = elements.enumerated()
             .compactMap { index, _ in
                 convertToPoint(ofIndex: index)
             }
