@@ -48,19 +48,25 @@ class GestureEnableView: UIView {
     }
 
     func moveTo(_ point: CGPoint) {
-        self.center.x = point.x
+        center.x = point.x
+        lineView.center.x = bounds.width / 2
+        pointView.center.x = bounds.width / 2
         pointView.center.y = point.y
     }
 
     func updatePointView(width: Double, color: UIColor) {
         pointView.frame.size.width = width
+        pointView.frame.size.height = width
+        pointView.layer.cornerRadius = width / 2
         pointView.backgroundColor = color
+
         setNeedsLayout()
     }
 
     func updateLineView(width: Double, color: UIColor) {
         lineView.frame.size.width = width
         lineView.backgroundColor = color
+
         setNeedsLayout()
     }
 }
