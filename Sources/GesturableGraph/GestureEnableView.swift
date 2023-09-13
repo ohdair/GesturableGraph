@@ -8,8 +8,18 @@
 import UIKit
 
 class GestureEnableView: UIView {
-    let lineView = UIView()
-    let pointView = UIView()
+    let lineView = UIView(frame: CGRect(x: 0, y: 0,
+                                        width: Constraints.enableLineWidth,
+                                        height: 0))
+    let pointView = UIView(frame: CGRect(x: 0, y: 0,
+                                         width: Constraints.enablePointWidth,
+                                         height: Constraints.enablePointWidth))
+
+    override var bounds: CGRect {
+        didSet {
+            lineView.frame.size.height = bounds.height
+        }
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -25,21 +35,6 @@ class GestureEnableView: UIView {
     private func setUI() {
         addSubview(lineView)
         addSubview(pointView)
-
-        lineView.translatesAutoresizingMaskIntoConstraints = false
-        pointView.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            lineView.topAnchor.constraint(equalTo: topAnchor),
-            lineView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            lineView.widthAnchor.constraint(equalToConstant: Constraints.enableLineWidth),
-            lineView.centerXAnchor.constraint(equalTo: centerXAnchor),
-
-            pointView.widthAnchor.constraint(equalToConstant: Constraints.enablePointWidth),
-            pointView.heightAnchor.constraint(equalToConstant: Constraints.enablePointWidth),
-            pointView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            pointView.centerYAnchor.constraint(equalTo: centerYAnchor)
-        ])
     }
 
     private func setConfigure() {
@@ -58,13 +53,13 @@ class GestureEnableView: UIView {
     }
 
     func updatePointView(width: Double, color: UIColor) {
-        pointView.widthAnchor.constraint(equalToConstant: width).isActive = true
+        pointView.frame.size.width = width
         pointView.backgroundColor = color
         setNeedsLayout()
     }
 
     func updateLineView(width: Double, color: UIColor) {
-        lineView.widthAnchor.constraint(equalToConstant: width).isActive = true
+        lineView.frame.size.width = width
         lineView.backgroundColor = color
         setNeedsLayout()
     }
