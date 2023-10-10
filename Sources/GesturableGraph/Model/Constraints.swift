@@ -25,4 +25,6 @@ struct Constraints {
     static let enableLineColor = #colorLiteral(red: 1, green: 0.6745654941, blue: 0.1722558439, alpha: 1)
     static let enablePointWidth = 10.0
     static let enablePointColor = #colorLiteral(red: 0.8782253861, green: 0.8383012414, blue: 0.8147805333, alpha: 1)
+
+    static let AxisYDivision = 3
 }
