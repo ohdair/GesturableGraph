@@ -80,6 +80,17 @@ public final class GesturableGraph: UIView, Gesturable {
             gestureEnableView.widthAnchor.constraint(equalToConstant: enableViewidth),
             gestureEnableView.leadingAnchor.constraint(equalTo: leadingAnchor)
         ])
+
+        let axisYView = AxisYView(top: graph.elements.calibrationTop(ofValue: graph.padding.top)!,
+                                  bottom: graph.elements.calibrationBottom(ofValue: graph.padding.bottom)!)
+        addSubview(axisYView)
+        axisYView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            axisYView.topAnchor.constraint(equalTo: topAnchor),
+            axisYView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            axisYView.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ])
     }
 
     public override func draw(_ rect: CGRect) {
