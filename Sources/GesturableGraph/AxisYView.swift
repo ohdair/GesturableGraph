@@ -33,6 +33,10 @@ class AxisYView: UIStackView {
         self.decimalPlaces = decimalPlaces
 
         super.init(frame: .zero)
+
+        axis = .vertical
+        distribution = .equalSpacing
+        setUI()
     }
 
     required init(coder: NSCoder) {
@@ -43,6 +47,8 @@ class AxisYView: UIStackView {
         data.map { element in
             let textView = UITextView()
             textView.text = element + dataUnit
+            textView.isScrollEnabled = false
+            textView.backgroundColor = .clear
             return textView
         }.forEach { textView in
             self.addArrangedSubview(textView)
