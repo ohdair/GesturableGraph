@@ -26,5 +26,5 @@ struct Constraints {
     static let enablePointWidth = 10.0
     static let enablePointColor = #colorLiteral(red: 0.8782253861, green: 0.8383012414, blue: 0.8147805333, alpha: 1)
 
-    static let AxisYDivision = 3
+    static let AxisYDivision = 8
 }
