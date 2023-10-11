@@ -7,13 +7,13 @@
 
 import UIKit
 
-class AxisYView: UIStackView {
+public class AxisYView: UIStackView {
     private let top: Double
     private let bottom: Double
 
-    var dataUnit: String = ""
-    var division: Int
-    var decimalPlaces: Int
+    public var dataUnit: String = ""
+    public var division: Int
+    public var decimalPlaces: Int
     var data: [String] {
         return (0...division).map { index in
             let value = (top - ((top - bottom) * Double(index) / Double(division)))
@@ -55,7 +55,7 @@ class AxisYView: UIStackView {
         }
     }
 
-    func formatDoubles(_ element: Double) -> String {
+    private func formatDoubles(_ element: Double) -> String {
         let formatter = NumberFormatter()
         formatter.maximumFractionDigits = decimalPlaces
         formatter.minimumFractionDigits = decimalPlaces
