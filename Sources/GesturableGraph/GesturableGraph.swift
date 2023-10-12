@@ -40,10 +40,12 @@ public final class GesturableGraph: UIView {
         }
 
         self.graph = graph
-        self.gesturableGraphView = GesturableGraphView(graph: graph)
         self.axisYView = AxisYView(top: graph.calibrationTop, bottom: graph.calibrationBottom)
+        self.gesturableGraphView = GesturableGraphView(graph: graph)
 
         super.init(frame: .zero)
+
+        setUI()
     }
 
     required init?(coder: NSCoder) {

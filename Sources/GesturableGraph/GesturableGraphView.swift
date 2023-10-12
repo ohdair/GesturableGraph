@@ -61,8 +61,6 @@ public class GesturableGraphView: UIView, Gesturable {
             gestureEnableView.widthAnchor.constraint(equalToConstant: enableViewidth),
             gestureEnableView.leadingAnchor.constraint(equalTo: leadingAnchor)
         ])
-
-        
     }
 
     public override func draw(_ rect: CGRect) {

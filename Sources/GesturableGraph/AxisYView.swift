@@ -47,9 +47,8 @@ public class AxisYView: UIStackView {
         removeAllArrangedSubviews()
 
         data.map { element in
-            let textView = UITextView()
+            let textView = UILabel()
             textView.text = element + dataUnit
-            textView.isScrollEnabled = false
             textView.backgroundColor = .clear
             return textView
         }.forEach { textView in
