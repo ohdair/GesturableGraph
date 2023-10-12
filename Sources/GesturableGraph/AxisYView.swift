@@ -44,6 +44,8 @@ public class AxisYView: UIStackView {
     }
 
     private func setUI() {
+        removeAllArrangedSubviews()
+
         data.map { element in
             let textView = UITextView()
             textView.text = element + dataUnit
@@ -51,7 +53,7 @@ public class AxisYView: UIStackView {
             textView.backgroundColor = .clear
             return textView
         }.forEach { textView in
-            self.addArrangedSubview(textView)
+            addArrangedSubview(textView)
         }
     }
 
@@ -61,5 +63,12 @@ public class AxisYView: UIStackView {
         formatter.minimumFractionDigits = decimalPlaces
 
         return formatter.string(from: NSNumber(value: element)) ?? ""
+    }
+
+    private func removeAllArrangedSubviews() {
+        for view in arrangedSubviews {
+            removeArrangedSubview(view)
+            view.removeFromSuperview()
+        }
     }
 }
