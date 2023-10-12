@@ -66,7 +66,7 @@ public final class GesturableGraph: UIView {
 
             gesturableGraphView.topAnchor.constraint(equalTo: axisYView.arrangedSubviews.first!.centerYAnchor),
             gesturableGraphView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            gesturableGraphView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            gesturableGraphView.trailingAnchor.constraint(equalTo: axisYView.leadingAnchor),
             gesturableGraphView.bottomAnchor.constraint(equalTo: axisYView.arrangedSubviews.last!.centerYAnchor)
         ])
     }
