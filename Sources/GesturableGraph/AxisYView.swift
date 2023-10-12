@@ -11,9 +11,22 @@ public class AxisYView: UIStackView {
     private let top: Double
     private let bottom: Double
 
-    public var dataUnit: String = ""
-    public var division: Int
-    public var decimalPlaces: Int
+    public var dataUnit: String = "" {
+        didSet {
+            setUI()
+        }
+    }
+    public var division: Int {
+        didSet {
+            setUI()
+        }
+    }
+    public var decimalPlaces: Int {
+        didSet {
+            setUI()
+        }
+    }
+
     var data: [String] {
         return (0...division).map { index in
             let value = (top - ((top - bottom) * Double(index) / Double(division)))
@@ -46,12 +59,11 @@ public class AxisYView: UIStackView {
     private func setUI() {
         removeAllArrangedSubviews()
 
-        data.map { element in
+        for element in data {
             let textView = UILabel()
             textView.text = element + dataUnit
             textView.backgroundColor = .clear
-            return textView
-        }.forEach { textView in
+
             addArrangedSubview(textView)
         }
     }
