@@ -7,23 +7,24 @@
 
 import UIKit
 
-public class AxisYView: UIStackView {
+public class AxisYView: UIView {
     private let top: Double
     private let bottom: Double
+    private let stackView = UIStackView()
 
     public var dataUnit: String = "" {
         didSet {
-            setUI()
+            updateStackView()
         }
     }
     public var division: Int {
         didSet {
-            setUI()
+            updateStackView()
         }
     }
     public var decimalPlaces: Int {
         didSet {
-            setUI()
+            updateStackView()
         }
     }
 
@@ -47,24 +48,31 @@ public class AxisYView: UIStackView {
 
         super.init(frame: .zero)
 
-        axis = .vertical
-        distribution = .equalSpacing
-        setUI()
+        setStackView()
     }
 
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setUI() {
-        removeAllArrangedSubviews()
+    private func setStackView() {
+        stackView.axis = .vertical
+        stackView.distribution = .equalSpacing
+
+        updateStackView()
+    }
+
+    private func updateStackView() {
+        stackView.arrangedSubviews.forEach {
+            $0.removeFromSuperview()
+        }
 
         for element in data {
             let textView = UILabel()
             textView.text = element + dataUnit
             textView.backgroundColor = .clear
 
-            addArrangedSubview(textView)
+            stackView.addArrangedSubview(textView)
         }
     }
 
@@ -74,12 +82,5 @@ public class AxisYView: UIStackView {
         formatter.minimumFractionDigits = decimalPlaces
 
         return formatter.string(from: NSNumber(value: element)) ?? ""
-    }
-
-    private func removeAllArrangedSubviews() {
-        for view in arrangedSubviews {
-            removeArrangedSubview(view)
-            view.removeFromSuperview()
-        }
     }
 }
