@@ -8,9 +8,9 @@
 import UIKit
 
 public class AxisYView: UIView {
+    let stackView = UIStackView()
     private let top: Double
     private let bottom: Double
-    private let stackView = UIStackView()
 
     public var dataUnit: String = "" {
         didSet {
@@ -58,6 +58,15 @@ public class AxisYView: UIView {
     private func setStackView() {
         stackView.axis = .vertical
         stackView.distribution = .equalSpacing
+
+        addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
 
         updateStackView()
     }
