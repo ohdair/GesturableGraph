@@ -64,10 +64,10 @@ public final class GesturableGraph: UIView {
             axisYView.trailingAnchor.constraint(equalTo: trailingAnchor),
             axisYView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
-            gesturableGraphView.topAnchor.constraint(equalTo: axisYView.stackView.arrangedSubviews.first!.centerYAnchor),
+            gesturableGraphView.topAnchor.constraint(equalTo: topAnchor, constant: UIFont.preferredFont(forTextStyle: .caption1).lineHeight / 2),
             gesturableGraphView.leadingAnchor.constraint(equalTo: leadingAnchor),
             gesturableGraphView.trailingAnchor.constraint(equalTo: axisYView.leadingAnchor),
-            gesturableGraphView.bottomAnchor.constraint(equalTo: axisYView.stackView.arrangedSubviews.last!.centerYAnchor)
+            gesturableGraphView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIFont.preferredFont(forTextStyle: .caption1).lineHeight / 2)
         ])
     }
 

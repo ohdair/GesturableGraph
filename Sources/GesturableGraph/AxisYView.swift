@@ -27,6 +27,11 @@ public class AxisYView: UIView {
             updateStackView()
         }
     }
+    public var textColor: UIColor = .black {
+        didSet {
+            updateStackView()
+        }
+    }
 
     var data: [String] {
         return (0...division).map { index in
@@ -79,7 +84,9 @@ public class AxisYView: UIView {
         for element in data {
             let textView = UILabel()
             textView.text = element + dataUnit
+            textView.textColor = textColor
             textView.backgroundColor = .clear
+            textView.font = .preferredFont(forTextStyle: .caption1)
 
             stackView.addArrangedSubview(textView)
         }
