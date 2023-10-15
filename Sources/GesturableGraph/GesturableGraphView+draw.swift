@@ -1,5 +1,5 @@
 //
-//  GesturableGraph+draw.swift
+//  GesturableGraphView+draw.swift
 //
 //
 //  Created by 박재우 on 8/29/23.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-extension GesturableGraph {
+extension GesturableGraphView {
     func graphPath(through points: [CGPoint]) -> UIBezierPath? {
-        switch type {
+        switch graph.type {
         case .curve:
             return UIBezierPath(quadCurve: points)
         case .straight:

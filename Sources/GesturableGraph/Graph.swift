@@ -31,6 +31,12 @@ public struct Graph {
             configurePoints()
         }
     }
+    var calibrationTop: Double {
+        return elements.calibrationTop(ofValue: padding.top)!
+    }
+    var calibrationBottom: Double {
+        return elements.calibrationBottom(ofValue: padding.bottom)!
+    }
 
     init?(elements: [Double],
           type: GraphType = .curve,
@@ -64,11 +70,8 @@ public struct Graph {
             }
     }
 
-    private func convertToPoint(ofIndex index: Int) -> Point? {
-        guard let y = calculateY(ofElement: elements[index]) else {
-            return nil
-        }
-
+    private func convertToPoint(ofIndex index: Int) -> Point {
+        let y = calculateY(ofElement: elements[index])
         let x = calculateX(ofIndex: index)
 
         return (x: x, y: y)
@@ -78,13 +81,7 @@ public struct Graph {
         return (CGFloat(distribution.rawValue + 1) / 2 + CGFloat(index)) / CGFloat(elements.count + distribution.rawValue)
     }
 
-    private func calculateY(ofElement element: Double) -> Double? {
-        guard let calibrationTop = elements.calibrationTop(ofValue: padding.top),
-              let calibrationBottom = elements.calibrationBottom(ofValue: padding.bottom)
-        else {
-            return nil
-        }
-
+    private func calculateY(ofElement element: Double) -> Double {
         return (calibrationTop - element) / (calibrationTop - calibrationBottom)
     }
 }

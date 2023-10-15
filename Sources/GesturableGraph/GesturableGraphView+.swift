@@ -1,6 +1,6 @@
 import UIKit
 
-extension GesturableGraph {
+extension GesturableGraphView {
     public struct GraphLine {
         public var width: Double = Constraints.lineWidth
         public var color: UIColor = Constraints.lineColor
