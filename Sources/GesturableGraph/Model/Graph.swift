@@ -92,14 +92,14 @@ extension Graph {
     // Increases in percentage based on the height of the graph.
     // The default value for top is 30 and bottom is 30.
     public struct Padding {
-        var top: Double = Constraints.topOfPadding {
+        public var top: Double = Constraints.topOfPadding {
             didSet {
                 if top.isLess(than: 0) {
                     top = oldValue
                 }
             }
         }
-        var bottom: Double = Constraints.bottomOfPadding {
+        public var bottom: Double = Constraints.bottomOfPadding {
             didSet {
                 if bottom.isLess(than: 0) {
                     bottom = oldValue

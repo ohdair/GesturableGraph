@@ -8,31 +8,21 @@
 import UIKit
 
 public final class GesturableGraph: UIView {
-    private var graph: Graph
+    public var graph: Graph {
+        didSet {
+            updateAxisYView()
+        }
+    }
+    public var axisY: AxisY = AxisY() {
+        didSet {
+            axisYView.dataUnit = axisY.dataUnit
+            axisYView.division = axisY.division
+            axisYView.decimalPlaces = axisY.decimalPlaces
+        }
+    }
 
     public let gesturableGraphView: GesturableGraphView
-    public let axisYView: AxisYView
-
-    public lazy var elements = graph.elements {
-        didSet {
-            graph.elements = elements
-        }
-    }
-    public lazy var distribution = graph.distribution {
-        didSet {
-            graph.distribution = distribution
-        }
-    }
-    public lazy var type = graph.type {
-        didSet {
-            graph.type = type
-        }
-    }
-    public lazy var padding = graph.padding {
-        didSet {
-            graph.padding = padding
-        }
-    }
+    let axisYView: AxisYView
 
     public init?(elements: [Double]) {
         guard let graph = Graph(elements: elements) else {
@@ -40,7 +30,7 @@ public final class GesturableGraph: UIView {
         }
 
         self.graph = graph
-        self.axisYView = AxisYView(top: graph.calibrationTop, bottom: graph.calibrationBottom)
+        self.axisYView = AxisYView(axisY, top: graph.calibrationTop, bottom: graph.calibrationBottom)
         self.gesturableGraphView = GesturableGraphView(graph: graph)
 
         super.init(frame: .zero)
@@ -70,5 +60,9 @@ public final class GesturableGraph: UIView {
             gesturableGraphView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIFont.preferredFont(forTextStyle: .caption1).lineHeight / 2)
         ])
     }
-
+    
+    private func updateAxisYView() {
+        axisYView.top = graph.calibrationTop
+        axisYView.bottom = graph.calibrationBottom
+    }
 }
