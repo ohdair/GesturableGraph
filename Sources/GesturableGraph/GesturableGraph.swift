@@ -27,8 +27,8 @@ public final class GesturableGraph: UIView {
     }
 
     public let gesturableGraphView: GesturableGraphView
+    public let axisYView: AxisYView
     let axisXView: AxisXView
-    let axisYView: AxisYView
 
     public init?(elements: [Double]) {
         guard let graph = Graph(elements: elements) else {
@@ -49,6 +49,43 @@ public final class GesturableGraph: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override public func layoutSubviews() {
+        super.layoutSubviews()
+
+        switch axisYView.position {
+        case .left:
+            NSLayoutConstraint.activate([
+                axisYView.topAnchor.constraint(equalTo: topAnchor),
+                axisYView.leadingAnchor.constraint(equalTo: leadingAnchor),
+                axisYView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIFont.preferredFont(forTextStyle: .caption1).lineHeight / 2),
+
+                axisXView.bottomAnchor.constraint(equalTo: bottomAnchor),
+                axisXView.leadingAnchor.constraint(equalTo: axisYView.trailingAnchor),
+                axisXView.trailingAnchor.constraint(equalTo: trailingAnchor),
+
+                gesturableGraphView.topAnchor.constraint(equalTo: topAnchor, constant: UIFont.preferredFont(forTextStyle: .caption1).lineHeight / 2),
+                gesturableGraphView.leadingAnchor.constraint(equalTo: axisYView.trailingAnchor),
+                gesturableGraphView.trailingAnchor.constraint(equalTo: trailingAnchor),
+                gesturableGraphView.bottomAnchor.constraint(equalTo: axisXView.topAnchor)
+            ])
+        case .right:
+            NSLayoutConstraint.activate([
+                axisYView.topAnchor.constraint(equalTo: topAnchor),
+                axisYView.trailingAnchor.constraint(equalTo: trailingAnchor),
+                axisYView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIFont.preferredFont(forTextStyle: .caption1).lineHeight / 2),
+
+                axisXView.bottomAnchor.constraint(equalTo: bottomAnchor),
+                axisXView.leadingAnchor.constraint(equalTo: leadingAnchor),
+                axisXView.trailingAnchor.constraint(equalTo: axisYView.leadingAnchor),
+
+                gesturableGraphView.topAnchor.constraint(equalTo: topAnchor, constant: UIFont.preferredFont(forTextStyle: .caption1).lineHeight / 2),
+                gesturableGraphView.leadingAnchor.constraint(equalTo: leadingAnchor),
+                gesturableGraphView.trailingAnchor.constraint(equalTo: axisYView.leadingAnchor),
+                gesturableGraphView.bottomAnchor.constraint(equalTo: axisXView.topAnchor)
+            ])
+        }
+    }
+
     private func setUI() {
         addSubview(axisYView)
         addSubview(axisXView)
@@ -57,21 +94,6 @@ public final class GesturableGraph: UIView {
         axisYView.translatesAutoresizingMaskIntoConstraints = false
         axisXView.translatesAutoresizingMaskIntoConstraints = false
         gesturableGraphView.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            axisYView.topAnchor.constraint(equalTo: topAnchor),
-            axisYView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            axisYView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIFont.preferredFont(forTextStyle: .caption1).lineHeight / 2),
-
-            axisXView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            axisXView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            axisXView.trailingAnchor.constraint(equalTo: axisYView.leadingAnchor),
-
-            gesturableGraphView.topAnchor.constraint(equalTo: topAnchor, constant: UIFont.preferredFont(forTextStyle: .caption1).lineHeight / 2),
-            gesturableGraphView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            gesturableGraphView.trailingAnchor.constraint(equalTo: axisYView.leadingAnchor),
-            gesturableGraphView.bottomAnchor.constraint(equalTo: axisXView.topAnchor)
-        ])
     }
     
     private func updateViews() {

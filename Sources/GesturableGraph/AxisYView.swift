@@ -8,6 +8,7 @@
 import UIKit
 
 public class AxisYView: UIView {
+    public var position: Position = .right
     private let stackView = UIStackView()
     var top: Double
     var bottom: Double
@@ -96,5 +97,12 @@ public class AxisYView: UIView {
         formatter.minimumFractionDigits = decimalPlaces
 
         return formatter.string(from: NSNumber(value: element)) ?? ""
+    }
+}
+
+extension AxisYView {
+    public enum Position {
+        case left
+        case right
     }
 }
