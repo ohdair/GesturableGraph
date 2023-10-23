@@ -28,7 +28,11 @@ public class GesturableGraphView: UIView, Gesturable {
     var gesture: CGPoint?
 
     private var gestureEnableView = GestureEnableView()
-    var graph: Graph
+    var graph: Graph {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
 
     public init(graph: Graph) {
         self.graph = graph
