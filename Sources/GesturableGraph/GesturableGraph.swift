@@ -13,6 +13,11 @@ public final class GesturableGraph: UIView {
             updateViews()
         }
     }
+    public var axisX: AxisX = AxisX() {
+        didSet {
+            axisXView.time = axisX.time
+        }
+    }
     public var axisY: AxisY = AxisY() {
         didSet {
             axisYView.dataUnit = axisY.dataUnit
@@ -22,6 +27,7 @@ public final class GesturableGraph: UIView {
     }
 
     public let gesturableGraphView: GesturableGraphView
+    let axisXView: AxisXView
     let axisYView: AxisYView
 
     public init?(elements: [Double]) {
@@ -31,6 +37,7 @@ public final class GesturableGraph: UIView {
 
         self.graph = graph
         self.gesturableGraphView = GesturableGraphView(graph: graph)
+        self.axisXView = AxisXView(axisX)
         self.axisYView = AxisYView(axisY, top: graph.calibrationTop, bottom: graph.calibrationBottom)
 
         super.init(frame: .zero)
@@ -44,20 +51,26 @@ public final class GesturableGraph: UIView {
 
     private func setUI() {
         addSubview(axisYView)
+        addSubview(axisXView)
         addSubview(gesturableGraphView)
 
         axisYView.translatesAutoresizingMaskIntoConstraints = false
+        axisXView.translatesAutoresizingMaskIntoConstraints = false
         gesturableGraphView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             axisYView.topAnchor.constraint(equalTo: topAnchor),
             axisYView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            axisYView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            axisYView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIFont.preferredFont(forTextStyle: .caption1).lineHeight / 2),
+
+            axisXView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            axisXView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            axisXView.trailingAnchor.constraint(equalTo: axisYView.leadingAnchor),
 
             gesturableGraphView.topAnchor.constraint(equalTo: topAnchor, constant: UIFont.preferredFont(forTextStyle: .caption1).lineHeight / 2),
             gesturableGraphView.leadingAnchor.constraint(equalTo: leadingAnchor),
             gesturableGraphView.trailingAnchor.constraint(equalTo: axisYView.leadingAnchor),
-            gesturableGraphView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIFont.preferredFont(forTextStyle: .caption1).lineHeight / 2)
+            gesturableGraphView.bottomAnchor.constraint(equalTo: axisXView.topAnchor)
         ])
     }
     
