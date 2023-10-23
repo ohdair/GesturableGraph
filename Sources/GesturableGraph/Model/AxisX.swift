@@ -49,15 +49,15 @@ public struct AxisX {
             let dateFormatter = DateFormatter()
             switch self {
             case .seconds:
-                dateFormatter.dateFormat = "ss초"
+                dateFormatter.dateFormat = "s초"
             case .minutes:
-                dateFormatter.dateFormat = "mm분"
+                dateFormatter.dateFormat = "m분"
             case .hours:
                 dateFormatter.dateFormat = "a h시"
             case .days:
-                dateFormatter.dateFormat = "dd일"
+                dateFormatter.dateFormat = "d일"
             case .months:
-                dateFormatter.dateFormat = "MM월"
+                dateFormatter.dateFormat = "M월"
             }
             return dateFormatter.string(from: date)
         }
