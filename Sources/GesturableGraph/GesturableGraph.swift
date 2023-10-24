@@ -37,7 +37,7 @@ public final class GesturableGraph: UIView {
 
         self.graph = graph
         self.gesturableGraphView = GesturableGraphView(graph: graph)
-        self.axisXView = AxisXView(axisX)
+        self.axisXView = AxisXView(axisX, distribution: graph.calibrationDistribution)
         self.axisYView = AxisYView(axisY, top: graph.calibrationTop, bottom: graph.calibrationBottom)
 
         super.init(frame: .zero)
@@ -98,6 +98,7 @@ public final class GesturableGraph: UIView {
     
     private func updateViews() {
         gesturableGraphView.graph = graph
+        axisXView.distribution = graph.calibrationDistribution
         axisYView.top = graph.calibrationTop
         axisYView.bottom = graph.calibrationBottom
     }

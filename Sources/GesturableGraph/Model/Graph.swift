@@ -37,6 +37,9 @@ public struct Graph {
     var calibrationBottom: Double {
         return elements.calibrationBottom(ofValue: padding.bottom)!
     }
+    var calibrationDistribution: Double {
+        return (CGFloat(distribution.rawValue + 1) / 2) / CGFloat(elements.count + distribution.rawValue)
+    }
 
     init?(elements: [Double],
           type: GraphType = .curve,
