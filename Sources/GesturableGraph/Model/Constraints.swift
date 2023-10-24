@@ -27,4 +27,6 @@ struct Constraints {
     static let enablePointColor = #colorLiteral(red: 0.8782253861, green: 0.8383012414, blue: 0.8147805333, alpha: 1)
 
     static let AxisYDivision = 8
+
+    static let gapHeight = UIFont.preferredFont(forTextStyle: .caption1).lineHeight / 2
 }
