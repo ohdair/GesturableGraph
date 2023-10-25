@@ -51,7 +51,7 @@ class ExtraUnitView: UIView {
 
     private func setStackView() {
         stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
+        stackView.distribution = .equalSpacing
 
         addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false

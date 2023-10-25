@@ -1,6 +1,6 @@
 import UIKit
 
-public class GesturableGraphView: UIView, Gesturable {
+public class GesturableGraphView: UIView {
     private var elements = [Double]()
 
     private lazy var points = {
@@ -25,9 +25,7 @@ public class GesturableGraphView: UIView, Gesturable {
         }
     }
 
-    var gesture: CGPoint?
-
-    private var gestureEnableView = GestureEnableView()
+    var gestureEnableView = GestureEnableView()
     var graph: Graph {
         didSet {
             setNeedsDisplay()
@@ -83,26 +81,5 @@ public class GesturableGraphView: UIView, Gesturable {
         fillGraphArea(graphPath, using: points)
         draw(graphPath)
         draw(points)
-    }
-
-    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        gesture = touches.first?.location(in: self)
-
-        if let point = calculatedPoint(in: graph, withSize: bounds) {
-            gestureEnableView.moveTo(point)
-            gestureEnableView.isHidden = false
-        }
-    }
-
-    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        gestureEnableView.isHidden = true
-    }
-
-    public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        gesture = touches.first?.location(in: self)
-
-        if let point = calculatedPoint(in: graph, withSize: bounds) {
-            gestureEnableView.moveTo(point)
-        }
     }
 }

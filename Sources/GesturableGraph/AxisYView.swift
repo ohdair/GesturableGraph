@@ -90,7 +90,7 @@ class AxisYView: UIView {
         }
     }
 
-    private func formatDoubles(_ element: Double) -> String {
+    func formatDoubles(_ element: Double) -> String {
         let formatter = NumberFormatter()
         formatter.maximumFractionDigits = decimalPlaces
         formatter.minimumFractionDigits = decimalPlaces

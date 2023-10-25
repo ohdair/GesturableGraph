@@ -45,6 +45,49 @@ public struct AxisX {
             }
         }
 
+        var unit: Int {
+            switch self {
+            case .seconds:
+                return 60
+            case .minutes:
+                return 60
+            case .hours:
+                return 1440
+            case .days:
+                return 30
+            case .months:
+                return 12
+            }
+        }
+
+        func dateComponent(time: Int) -> DateComponents {
+            var component = DateComponents()
+            switch self {
+            case .seconds:
+                component.second = time
+            case .minutes:
+                component.minute = time
+            case .hours:
+                component.minute = time
+            case .days:
+                component.day = time
+            case .months:
+                component.month = time
+            }
+            return component
+        }
+
+        func timePointing(_ pointing: Double) -> String {
+            let component = dateComponent(time: Int(pointing))
+            let calendar = Calendar.current
+
+            guard let date = calendar.date(from: component) else {
+                return ""
+            }
+
+            return dateFormatterOfTimer(date: date)
+        }
+
         func dateFormatter(date: Date) -> String {
             let dateFormatter = DateFormatter()
             switch self {
@@ -54,6 +97,23 @@ public struct AxisX {
                 dateFormatter.dateFormat = "m분"
             case .hours:
                 dateFormatter.dateFormat = "a h시"
+            case .days:
+                dateFormatter.dateFormat = "d일"
+            case .months:
+                dateFormatter.dateFormat = "M월"
+            }
+            return dateFormatter.string(from: date)
+        }
+
+        func dateFormatterOfTimer(date: Date) -> String {
+            let dateFormatter = DateFormatter()
+            switch self {
+            case .seconds:
+                dateFormatter.dateFormat = "s초"
+            case .minutes:
+                dateFormatter.dateFormat = "m분"
+            case .hours:
+                dateFormatter.dateFormat = "a h시 m분"
             case .days:
                 dateFormatter.dateFormat = "d일"
             case .months:
