@@ -8,7 +8,7 @@
 import UIKit
 
 public struct GraphData {
-    var axisX: String
-    var axisY: String
-    var extraUnit: UIImage?
+    public var axisX: String
+    public var axisY: String
+    public var extraUnit: UIImage?
 }
