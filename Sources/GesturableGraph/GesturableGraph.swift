@@ -25,9 +25,9 @@ public final class GesturableGraph: UIView, Gesturable {
             axisYView.decimalPlaces = axisY.decimalPlaces
         }
     }
-    public var extraUnit: ExtraUnit = ExtraUnit() {
+    public var extraUnits: ExtraUnit = ExtraUnit() {
         didSet {
-            extraUnitView.images = extraUnit.images
+            extraUnitView.images = extraUnits.images
         }
     }
 
@@ -133,13 +133,15 @@ public final class GesturableGraph: UIView, Gesturable {
             gesturableGraphView.gestureEnableView.moveTo(point)
             gesturableGraphView.gestureEnableView.isHidden = false
 
-            let value = axisYView.top - (point.y / gesturableGraphView.bounds.height * (axisYView.top - axisYView.bottom))
-            delegate?.gesturableGraph(self, didTapWithData: GraphData(axisX: "", axisY: axisYView.formatDoubles(value)))
+            let graphData = createGraphData(withPoint: point)
+            delegate?.gesturableGraph(self, didTapWithData: graphData)
         }
     }
 
     public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         gesturableGraphView.gestureEnableView.isHidden = true
+
+        delegate?.gesturableGraph(self, didTapWithData: nil)
     }
 
     public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -148,22 +150,26 @@ public final class GesturableGraph: UIView, Gesturable {
         if let point = calculatedPoint(in: graph, withSize: gesturableGraphView.bounds) {
             gesturableGraphView.gestureEnableView.moveTo(point)
 
-            let d = (point.x / gesturableGraphView.bounds.width) * Double(axisX.time.unit)
-            let x = axisX.time.timePointing(d)
-
-            let value = axisYView.top - (point.y / gesturableGraphView.bounds.height * (axisYView.top - axisYView.bottom))
-            
-            var extra: UIImage? = nil
-            if !extraUnit.images.isEmpty {
-                let extraIndex = Int(((point.x / gesturableGraphView.bounds.width) * Double(extraUnit.images.count-1)).rounded())
-                extra = extraUnit.images[extraIndex]
-            }
-
-            delegate?.gesturableGraph(self, didTapWithData: GraphData(axisX: x, axisY: axisYView.formatDoubles(value), extraUnit: extra))
+            let graphData = createGraphData(withPoint: point)
+            delegate?.gesturableGraph(self, didTapWithData: graphData)
         }
+    }
+
+    private func createGraphData(withPoint point: CGPoint) -> GraphData {
+        let axisXPosition = (point.x / gesturableGraphView.bounds.width)
+        let axisXUnit = axisX.time.timePointing(axisXPosition * Double(axisX.time.unit))
+        let axisYUnit = axisYView.top - (point.y / gesturableGraphView.bounds.height * (axisYView.top - axisYView.bottom))
+
+        var extraUnit: UIImage? = nil
+        if !extraUnits.images.isEmpty {
+            let extraIndex = Int((axisXPosition * Double(extraUnits.images.count - 1)).rounded())
+            extraUnit = extraUnits.images[extraIndex]
+        }
+
+        return GraphData(axisX: axisXUnit, axisY: axisYView.formatDoubles(axisYUnit), extraUnit: extraUnit)
     }
 }
 
 public protocol GesturableGraphEnable: NSObject {
-    func gesturableGraph(_ gesturableGraph: GesturableGraph, didTapWithData data: GraphData)
+    func gesturableGraph(_ gesturableGraph: GesturableGraph, didTapWithData data: GraphData?)
 }
