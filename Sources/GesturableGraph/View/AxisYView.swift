@@ -71,7 +71,7 @@ class AxisYView: UIView {
         updateStackView()
     }
 
-    func updateStackView() {
+    private func updateStackView() {
         stackView.arrangedSubviews.forEach {
             $0.removeFromSuperview()
         }
@@ -84,7 +84,7 @@ class AxisYView: UIView {
         }
     }
 
-    func updateLabels() {
+    private func updateLabels() {
         zip(stackView.arrangedSubviews, data).forEach { view, value in
             (view as! UILabel).text = value + dataUnit
         }
