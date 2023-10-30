@@ -164,7 +164,7 @@ extension GesturableGraph {
     }
 
     private func createGraphData(withPoint point: CGPoint) -> GraphData {
-        let axisXPosition = (point.x / gesturableGraphView.bounds.width)
+        let axisXPosition = (point.x - (graph.calibrationDistribution * gesturableGraphView.bounds.width)) / (gesturableGraphView.bounds.width * (1 - graph.calibrationDistribution * 2))
         let axisXUnit = axisXUnit.timePointing(axisXPosition * Double(axisXUnit.unit))
         let axisYUnit = axisYView.top - (point.y / gesturableGraphView.bounds.height * (axisYView.top - axisYView.bottom))
 
