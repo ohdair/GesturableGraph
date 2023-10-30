@@ -3,7 +3,9 @@ GesturableGraph is a library that expresses values in a graph based on user touc
 
 # Example
 
-<img width=250 src="https://github.com/ohdair/GesturableGraph/assets/79438622/f2719049-6adf-4c22-a042-c7a6d559ee10">
+|<img width="300" src="https://github.com/ohdair/GesturableGraph/assets/79438622/5bd3af1b-ea7e-4f3f-865e-9c98f4b9a50f">|<img width=300 src=https://github.com/ohdair/GesturableGraph/assets/79438622/0bc1139f-99d4-4d68-ab32-f4429071dda0>|
+|-|-|
+
 
 # Requirements
 - iOS 13.0+
@@ -53,5 +55,101 @@ extension ViewController: GesturableGraphEnable {
     func gesturableGraph(_ gesturableGraph: GesturableGraph, didTapWithData data: GraphData?) {
         // You can use the data and present it in a UI.
     }
+}
+```
+## Data
+<img width="400" alt="Group 6@2x" src="https://github.com/ohdair/GesturableGraph/assets/79438622/64f65def-07b7-4f65-a6dd-f5865b40ddf7">
+
+### graph
+graph has 3 properties
+- type
+    ```swift
+    enum GraphType {
+        case curve    // default
+        case straight
+    }
+    ```
+- distribution
+    ```swift
+    // aroundSpacing is that spacing at left/right spacing is 1/2 the size of the inner spacing.
+    // evenSpacing is that inner spacing and left/right spacing are the same.
+    enum Distribution {
+        case equalSpacing    // default
+        case aroundSpacing
+        case evenSpacing
+    }
+    ```
+- padding
+    ```swift
+    // Padding is a scaling factor for the height of the graph.
+    struct Padding {
+        var top: Double = 0.3       // default
+        var bottom: Double = 0.3    // default
+    }
+    ```
+### axisX
+```swift
+enum UnitOfTime {
+    case seconds
+    case minutes
+    case hours    // default
+    case days
+    case months
+}
+```
+### axisY
+```swift
+// position adjusts the position of axisY
+// division display the label on the axisY axis by the value.
+// decimalPlaces adjusts the position of the decimal point
+struct AxisY {
+    var dataUnit: String = ""
+    var division: Int = 8
+    var decimalPlaces: Int = 0
+
+    var position: Position = .right
+
+    enum Position {
+        case left
+        case right
+    }
+}
+```
+### extraUnits
+extraUnits only allows collection of images.
+
+## View
+### gesturableGraphView
+change the color and size property values.
+- line
+- point
+- enableLine
+- enablePoint
+- area
+```swift
+struct GraphLine {
+    var width: Double
+    var color: UIColor
+}
+
+struct GraphPoint {
+    var width: Double
+    var color: UIColor
+    var isHidden: Bool
+}
+
+struct GraphEnablePoint {
+    var width: Double
+    var color: UIColor
+}
+
+struct GraphEnableLine {
+    var width: Double
+    var color: UIColor
+}
+
+struct GraphArea {
+    var gradientColors: [UIColor]
+    var isFill: Bool
 }
 ```
