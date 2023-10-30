@@ -14,14 +14,14 @@ class AxisXView: UIView {
             setNeedsDisplay()
         }
     }
-    var time: AxisX.UnitOfTime {
+    var time: UnitOfTime {
         didSet {
             updateStackView()
         }
     }
 
-    init(_ axisX: AxisX, distribution: CGFloat) {
-        self.time = axisX.time
+    init(_ unit: UnitOfTime, distribution: CGFloat) {
+        self.time = unit
         self.distribution = distribution
 
         super.init(frame: .zero)
@@ -61,9 +61,26 @@ class AxisXView: UIView {
 
         for date in time.data {
             let textView = UILabel()
-            textView.text = time.dateFormatter(date: date)
+            textView.text = dateFormatter(date: date)
             textView.font = .preferredFont(forTextStyle: .caption1)
             stackView.addArrangedSubview(textView)
         }
+    }
+
+    private func dateFormatter(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        switch time {
+        case .seconds:
+            dateFormatter.dateFormat = "s초"
+        case .minutes:
+            dateFormatter.dateFormat = "m분"
+        case .hours:
+            dateFormatter.dateFormat = "a h시"
+        case .days:
+            dateFormatter.dateFormat = "d일"
+        case .months:
+            dateFormatter.dateFormat = "M월"
+        }
+        return dateFormatter.string(from: date)
     }
 }
