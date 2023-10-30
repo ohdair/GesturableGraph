@@ -75,7 +75,13 @@ public enum UnitOfTime {
     }
     
     func timePointing(_ pointing: Double) -> String {
-        let component = dateComponent(time: Int(pointing))
+        var component: DateComponents
+        switch self {
+        case .days, .months:
+            component = dateComponent(time: Int(ceil(pointing)))
+        default:
+            component = dateComponent(time: Int(pointing))
+        }
         let calendar = Calendar.current
         
         guard let date = calendar.date(from: component) else {
