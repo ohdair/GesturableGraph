@@ -167,6 +167,7 @@ extension GesturableGraph {
         let axisXPosition = (point.x - (graph.calibrationDistribution * gesturableGraphView.bounds.width)) / (gesturableGraphView.bounds.width * (1 - graph.calibrationDistribution * 2))
         let axisXUnit = axisXUnit.timePointing(axisXPosition * Double(axisXUnit.unit))
         let axisYUnit = axisYView.top - (point.y / gesturableGraphView.bounds.height * (axisYView.top - axisYView.bottom))
+        let formattedAxisYUnit = axisYUnit.formatDouble(decimalPlaces: axisY.decimalPlaces)
 
         var extraUnit: UIImage? = nil
         if !extraUnits.isEmpty {
@@ -174,6 +175,10 @@ extension GesturableGraph {
             extraUnit = extraUnits[index]
         }
 
-        return GraphData(axisX: axisXUnit, axisY: axisYView.formatDoubles(axisYUnit), extraUnit: extraUnit)
+        return GraphData(
+            axisX: axisXUnit,
+            axisY: formattedAxisYUnit,
+            extraUnit: extraUnit
+        )
     }
 }

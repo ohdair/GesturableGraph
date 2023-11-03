@@ -31,7 +31,7 @@ class AxisYView: UIView {
     private var data: [String] {
         return (0...division).map { index in
             let value = (top - ((top - bottom) * Double(index) / Double(division)))
-            return formatDoubles(value)
+            return value.formatDouble(decimalPlaces: decimalPlaces)
         }
     }
 
@@ -88,13 +88,5 @@ class AxisYView: UIView {
         zip(stackView.arrangedSubviews, data).forEach { view, value in
             (view as! UILabel).text = value + dataUnit
         }
-    }
-
-    func formatDoubles(_ element: Double) -> String {
-        let formatter = NumberFormatter()
-        formatter.maximumFractionDigits = decimalPlaces
-        formatter.minimumFractionDigits = decimalPlaces
-
-        return formatter.string(from: NSNumber(value: element)) ?? ""
     }
 }
