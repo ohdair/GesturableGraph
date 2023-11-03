@@ -29,6 +29,7 @@ public final class GesturableGraph: UIView, Gesturable {
             axisYView.dataUnit = axisY.dataUnit
             axisYView.division = axisY.division
             axisYView.decimalPlaces = axisY.decimalPlaces
+            updateLayouts()
         }
     }
     public var extraUnits: [UIImage] = [] {
@@ -43,6 +44,17 @@ public final class GesturableGraph: UIView, Gesturable {
     let extraUnitView: ExtraUnitView
 
     var gesture: CGPoint?
+
+    private lazy var leftConstraints = [
+        axisYView.leadingAnchor.constraint(equalTo: leadingAnchor),
+        axisXView.leadingAnchor.constraint(equalTo: axisYView.trailingAnchor, constant: 5),
+        axisXView.trailingAnchor.constraint(equalTo: trailingAnchor),
+    ]
+    private lazy var rightConstraints = [
+        axisYView.trailingAnchor.constraint(equalTo: trailingAnchor),
+        axisXView.leadingAnchor.constraint(equalTo: leadingAnchor),
+        axisXView.trailingAnchor.constraint(equalTo: axisYView.leadingAnchor, constant: -5),
+    ]
 
     public init?(elements: [Double]) {
         guard let graph = Graph(elements: elements) else {
@@ -64,53 +76,6 @@ public final class GesturableGraph: UIView, Gesturable {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override public func layoutSubviews() {
-        super.layoutSubviews()
-
-        switch axisY.position {
-        case .left:
-            NSLayoutConstraint.activate([
-                axisYView.topAnchor.constraint(equalTo: topAnchor, constant: Constraints.gapHeight + 3),
-                axisYView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                axisYView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constraints.gapHeight - 3),
-
-                axisXView.bottomAnchor.constraint(equalTo: bottomAnchor),
-                axisXView.leadingAnchor.constraint(equalTo: axisYView.trailingAnchor, constant: 5),
-                axisXView.trailingAnchor.constraint(equalTo: trailingAnchor),
-
-                gesturableGraphView.topAnchor.constraint(equalTo: topAnchor, constant: Constraints.gapHeight * 2 + 3),
-                gesturableGraphView.leadingAnchor.constraint(equalTo: axisYView.trailingAnchor, constant: 5),
-                gesturableGraphView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                gesturableGraphView.bottomAnchor.constraint(equalTo: axisXView.topAnchor, constant: -3),
-
-                extraUnitView.topAnchor.constraint(equalTo: topAnchor),
-                extraUnitView.leadingAnchor.constraint(equalTo: axisYView.trailingAnchor, constant: 5),
-                extraUnitView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                extraUnitView.heightAnchor.constraint(equalToConstant: Constraints.gapHeight * 2)
-            ])
-        case .right:
-            NSLayoutConstraint.activate([
-                axisYView.topAnchor.constraint(equalTo: topAnchor, constant: Constraints.gapHeight + 3),
-                axisYView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                axisYView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constraints.gapHeight - 3),
-
-                axisXView.bottomAnchor.constraint(equalTo: bottomAnchor),
-                axisXView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                axisXView.trailingAnchor.constraint(equalTo: axisYView.leadingAnchor, constant: -5),
-
-                gesturableGraphView.topAnchor.constraint(equalTo: topAnchor, constant: Constraints.gapHeight * 2 + 3),
-                gesturableGraphView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                gesturableGraphView.trailingAnchor.constraint(equalTo: axisYView.leadingAnchor, constant: -5),
-                gesturableGraphView.bottomAnchor.constraint(equalTo: axisXView.topAnchor, constant: -3),
-
-                extraUnitView.topAnchor.constraint(equalTo: topAnchor),
-                extraUnitView.trailingAnchor.constraint(equalTo: axisYView.leadingAnchor, constant: -5),
-                extraUnitView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                extraUnitView.heightAnchor.constraint(equalToConstant: Constraints.gapHeight * 2)
-            ])
-        }
-    }
-
     private func setUI() {
         addSubview(axisYView)
         addSubview(axisXView)
@@ -121,6 +86,24 @@ public final class GesturableGraph: UIView, Gesturable {
         axisXView.translatesAutoresizingMaskIntoConstraints = false
         gesturableGraphView.translatesAutoresizingMaskIntoConstraints = false
         extraUnitView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            axisYView.topAnchor.constraint(equalTo: topAnchor, constant: Constraints.gapHeight + 3),
+            axisYView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constraints.gapHeight - 3),
+
+            axisXView.bottomAnchor.constraint(equalTo: bottomAnchor),
+
+            gesturableGraphView.topAnchor.constraint(equalTo: topAnchor, constant: Constraints.gapHeight * 2 + 3),
+            gesturableGraphView.centerXAnchor.constraint(equalTo: axisXView.centerXAnchor),
+            gesturableGraphView.widthAnchor.constraint(equalTo: axisXView.widthAnchor),
+            gesturableGraphView.bottomAnchor.constraint(equalTo: axisXView.topAnchor, constant: -3),
+
+            extraUnitView.topAnchor.constraint(equalTo: topAnchor),
+            extraUnitView.centerXAnchor.constraint(equalTo: axisXView.centerXAnchor),
+            extraUnitView.widthAnchor.constraint(equalTo: axisXView.widthAnchor),
+            extraUnitView.heightAnchor.constraint(equalToConstant: Constraints.gapHeight * 2)
+        ])
+
+        updateLayouts()
     }
 
     private func updateViews() {
@@ -129,6 +112,17 @@ public final class GesturableGraph: UIView, Gesturable {
         axisYView.top = graph.calibrationTop
         axisYView.bottom = graph.calibrationBottom
         extraUnitView.distribution = graph.calibrationDistribution
+    }
+
+    private func updateLayouts() {
+        switch axisY.position {
+        case .left:
+            NSLayoutConstraint.deactivate(rightConstraints)
+            NSLayoutConstraint.activate(leftConstraints)
+        case .right:
+            NSLayoutConstraint.deactivate(leftConstraints)
+            NSLayoutConstraint.activate(rightConstraints)
+        }
     }
 }
 
