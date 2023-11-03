@@ -9,9 +9,12 @@ import UIKit
 
 class ExtraUnitView: UIView {
     private let stackView = UIStackView()
+    private lazy var widthConstraint = stackView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1 - (distribution * 2))
     var distribution: CGFloat {
         didSet {
-            setNeedsDisplay()
+            removeConstraint(widthConstraint)
+            widthConstraint = stackView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1 - (distribution * 2))
+            widthConstraint.isActive = true
         }
     }
     var images: [UIImage] {
@@ -38,28 +41,23 @@ class ExtraUnitView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: bounds.width * distribution),
-            stackView.widthAnchor.constraint(greaterThanOrEqualToConstant: bounds.width - (bounds.width * distribution * 2)),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
-    }
-
     private func setStackView() {
         stackView.axis = .horizontal
         stackView.distribution = .equalSpacing
 
         addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            stackView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            widthConstraint
+        ])
 
         updateStackView()
     }
 
-    func updateStackView() {
+    private func updateStackView() {
         stackView.arrangedSubviews.forEach {
             $0.removeFromSuperview()
         }
